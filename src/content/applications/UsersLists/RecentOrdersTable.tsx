@@ -237,7 +237,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.title}
+                      {cryptoOrder.company_name
+}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -270,7 +271,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.website.slice(0, 10)}
+                      {/* {cryptoOrder.website.slice(0, 10)} */}
                     </Typography>
                   </TableCell>
                   <TableCell>

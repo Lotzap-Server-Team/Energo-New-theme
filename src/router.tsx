@@ -33,6 +33,9 @@ const Transactions = Loader(
 const UserLists = Loader(
   lazy(() => import('src/content/applications/UsersLists'))
 );
+const AddUsers = Loader(
+  lazy(() => import('src/content/applications/UsersLists/Add'))
+);
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -170,7 +173,11 @@ const routes: RouteObject[] = [
         //     element: <UserSettings />
         //   }
         // ]
-      }
+      },
+      {
+        path: 'adduser',
+        element: <AddUsers/>
+      },
     ]
   },
   {
