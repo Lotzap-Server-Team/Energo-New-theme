@@ -197,11 +197,11 @@ function SidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List> */}
-        <List
+        {/* <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Dashboards
+              Dashboard
             </ListSubheader>
           }
         >
@@ -215,7 +215,7 @@ function SidebarMenu() {
                   to="/dashboards/crypto"
                   startIcon={<BrightnessLowTwoToneIcon />}
                 >
-                  Cryptocurrency
+                  Companies
                 </Button>
               </ListItem>
               <ListItem component="div">
@@ -231,12 +231,12 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List>
+        </List> */}
         <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Management
+              Dashboard
             </ListSubheader>
           }
         >
@@ -250,7 +250,18 @@ function SidebarMenu() {
                   to="/management/transactions"
                   startIcon={<TableChartTwoToneIcon />}
                 >
-                  Transactions List
+                  Companies List
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/profile"
+                  startIcon={<AccountCircleTwoToneIcon />}
+                >
+                  User List
                 </Button>
               </ListItem>
             </List>

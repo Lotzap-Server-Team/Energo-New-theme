@@ -98,10 +98,10 @@ function Logo() {
   const theme = useTheme();
 
   return (
-    <TooltipWrapper
-      title="Tokyo Free White React Typescript Admin Dashboard"
-      arrow
-    >
+    // <TooltipWrapper
+    //   title="Tokyo Free White React Typescript Admin Dashboard"
+    //   arrow
+    // >
       <LogoWrapper to="/overview">
         <Badge
           sx={{
@@ -113,8 +113,9 @@ function Logo() {
           }}
           overlap="circular"
           color="success"
-          badgeContent="2.0"
+          badgeContent="Energo"
         >
+        {/* <img src="https://energo.codingserver.com/static/media/Energo-logo.5a8e8a0e0be0b175e123.jpg" alt="" width={100}/> */}
           <LogoSignWrapper>
             <LogoSign>
               <LogoSignInner />
@@ -122,7 +123,7 @@ function Logo() {
           </LogoSignWrapper>
         </Badge>
       </LogoWrapper>
-    </TooltipWrapper>
+    // </TooltipWrapper>
   );
 }
 
