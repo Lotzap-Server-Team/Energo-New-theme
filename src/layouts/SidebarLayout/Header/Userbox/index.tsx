@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import {
   Avatar,
@@ -22,6 +22,7 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+import { toast } from 'react-toastify';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -60,8 +61,8 @@ const UserBoxDescription = styled(Typography)(
 
 function HeaderUserbox() {
   const user = {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg',
+    name: 'Admin',
+    avatar: '/static/images/avatars/12.jpg',
     jobtitle: 'Project Manager'
   };
 
@@ -75,6 +76,15 @@ function HeaderUserbox() {
   const handleClose = (): void => {
     setOpen(false);
   };
+  const navigate = useNavigate();
+  const Logout = () => {
+    localStorage.removeItem("access_token")
+    localStorage.removeItem("user_id")
+    localStorage.removeItem("role_id")
+    localStorage.removeItem("permissions")
+    toast.success("Logout successfully")
+    navigate('/')
+  }
 
   return (
     <>
@@ -115,7 +125,7 @@ function HeaderUserbox() {
           </UserBoxText>
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />
-        <List sx={{ p: 1 }} component="nav">
+        {/* <List sx={{ p: 1 }} component="nav">
           <ListItem button to="/management/profile/details" component={NavLink}>
             <AccountBoxTwoToneIcon fontSize="small" />
             <ListItemText primary="My Profile" />
@@ -132,10 +142,10 @@ function HeaderUserbox() {
             <AccountTreeTwoToneIcon fontSize="small" />
             <ListItemText primary="Account Settings" />
           </ListItem>
-        </List>
+        </List> */}
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth>
+          <Button color="primary" fullWidth onClick={Logout}>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
           </Button>
