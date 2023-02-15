@@ -31,6 +31,8 @@ import ChromeReaderModeTwoToneIcon from '@mui/icons-material/ChromeReaderModeTwo
 import WorkspacePremiumTwoToneIcon from '@mui/icons-material/WorkspacePremiumTwoTone';
 import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
 import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
+import PublicIcon from '@mui/icons-material/Public';
+
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -262,6 +264,28 @@ function SidebarMenu() {
                   startIcon={<AccountCircleTwoToneIcon />}
                 >
                   User List
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/permissions"
+                  startIcon={<AccountCircleTwoToneIcon />}
+                >
+                  Permission List 
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/countries"
+                  startIcon={<PublicIcon />}
+                >
+                  Countries List 
                 </Button>
               </ListItem>
             </List>
