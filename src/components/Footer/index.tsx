@@ -18,7 +18,7 @@ function Footer() {
       >
         <Box>
           <Typography variant="subtitle1">
-            &copy; 2023. All Rights Reserved.
+            &copy; 2023 - All rights are preserved  By Energo<sup style={{fontSize : "8px" }} >TM</sup> 
           </Typography>
         </Box>
         <Typography
@@ -27,6 +27,15 @@ function Footer() {
           }}
           variant="subtitle1"
         >
+          {/* Crafted by{' '}
+         <Link
+            href="https://bloomui.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            BloomUI.com
+          </Link> 
+          Energo<sup style={{fontSize : "8px" }} >TM</sup>  */}
         </Typography>
       </Box>
     </FooterWrapper>

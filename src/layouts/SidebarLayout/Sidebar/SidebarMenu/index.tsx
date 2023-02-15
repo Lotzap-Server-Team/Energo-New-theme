@@ -32,6 +32,11 @@ import WorkspacePremiumTwoToneIcon from '@mui/icons-material/WorkspacePremiumTwo
 import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
 import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
 import PublicIcon from '@mui/icons-material/Public';
+import SettingsIcon from '@mui/icons-material/Settings';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+
 
 
 const MenuWrapper = styled(Box)(
@@ -271,8 +276,52 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
+                  to="/management/notification"
+                  startIcon={<NotificationsIcon />}
+                >
+                  Notification 
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/securitymanage"
+                  startIcon={<LockOpenIcon />}
+                >
+                  Security Management
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/activitylog"
+                  startIcon={<PendingActionsIcon />}
+                >
+                  Activity Logs
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/role"
+                  startIcon={<SettingsIcon />}
+                >
+                  Roles 
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
                   to="/management/permissions"
-                  startIcon={<AccountCircleTwoToneIcon />}
+                  startIcon={<SettingsIcon />}
                 >
                   Permission List 
                 </Button>
@@ -286,6 +335,28 @@ function SidebarMenu() {
                   startIcon={<PublicIcon />}
                 >
                   Countries List 
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/states"
+                  startIcon={<PublicIcon />}
+                >
+                  States List 
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/cities"
+                  startIcon={<PublicIcon />}
+                >
+                  Cities List 
                 </Button>
               </ListItem>
             </List>

@@ -34,7 +34,7 @@ import BulkActions from './BulkActions';
 import { Navigate, useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { store } from 'src/redux/store';
-import { deletePermission } from 'src/redux/store/reducers/slices/UserSlice';
+import { deletePermission, deleteState } from 'src/redux/store/reducers/slices/UserSlice';
 import { toast } from 'react-toastify';
 
 interface RecentOrdersTableProps {
@@ -106,18 +106,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
 
   const deletePermissionById=(e:any)=>{
     const formData ={
-      permission_id :e
+      state_id :e
     }
     
-          store.dispatch(deletePermission(formData)).then((res: any) => {
+          store.dispatch(deleteState(formData)).then((res: any) => {
             if(res.payload.status==true){
-              // setPermissions((prevRows : any) => {
-              //   const rowToDeleteIndex = randomInt(0, prevRows.length - 1);
-              //   return [
-              //     ...permissions.slice(0, rowToDeleteIndex),
-              //     ...permissions.slice(rowToDeleteIndex + 1),
-              //   ];
-              // });
+            alert("Successfully")
              toast.success("Successfull");
             //  setPermissions([]);
             }else{
@@ -214,7 +208,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           <BulkActions />
         </Box>
       )}
-      {!selectedBulkActions && <CardHeader title="Permissions List" />}
+      {!selectedBulkActions && <CardHeader title="States List" />}
       <Divider />
       <TableContainer>
         <Table>
@@ -228,16 +222,16 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   onChange={handleSelectAllCryptoOrders}
                 />
               </TableCell>
-              <TableCell>id</TableCell>
-              <TableCell>Parent </TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Url</TableCell>
+              <TableCell>S.No.</TableCell>
+              <TableCell>Country</TableCell>
+              <TableCell>State</TableCell>
+              <TableCell>Status</TableCell>
               <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paginatedCryptoOrders.map((cryptoOrder: any) => {
-              console.log(cryptoOrder, 'cryptoOrdercryptoOrdercryptoOrder');
+              console.log(cryptoOrder, 'cryptoOrder777777777777777');
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
                 cryptoOrder.id
               );
@@ -276,6 +270,17 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
+                      {cryptoOrder.country.title}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
                       {cryptoOrder.name}
                     </Typography>
                   </TableCell>
@@ -287,23 +292,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.parent}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {cryptoOrder.url}
+                      {cryptoOrder.is_active === 1? 'Active' : 'Inactive'}
                     </Typography>
                   </TableCell>
 
                   <TableCell align="center">
-                    <Tooltip title="Edit Permission" arrow>
+                    <Tooltip title="Edit State" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -316,13 +310,13 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       >
                         <Button
                           component={Link}
-                          to={'/management/edit/' + cryptoOrder.id}
+                          to={'/management/editstate/' + cryptoOrder.id}
                         >
                           <EditTwoToneIcon fontSize="small" />
                         </Button>
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Delete Permission" arrow>
+                    <Tooltip title="Delete State" arrow>
                       <IconButton
                         sx={{
                           '&:hover': { background: theme.colors.error.lighter },
