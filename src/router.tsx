@@ -33,12 +33,23 @@ const Transactions = Loader(
 const UserLists = Loader(
   lazy(() => import('src/content/applications/UsersLists'))
 );
+const Role = Loader(
+  lazy(() => import('src/content/applications/Role'))
+);
 const Permission = Loader(
   lazy(() => import('src/content/applications/Permission'))
 );
 const Countries = Loader(
   lazy(() => import('src/content/applications/Countries'))
 );
+const States = Loader(
+  lazy(() => import('src/content/applications/States'))
+);
+
+const Cities = Loader(
+  lazy(() => import('src/content/applications/Cities'))
+);
+
 
 
 const UserProfile = Loader(
@@ -50,6 +61,8 @@ const UserSettings = Loader(
 
 // Components
 
+
+// Permission  Components
 const AddPermission = Loader(
   lazy(() => import('src/content/applications/Permission/Add'))
 );
@@ -57,6 +70,8 @@ const AddPermission = Loader(
 const Editpermission = Loader(
   lazy(() => import('src/content/applications/Permission/Edit'))
 );
+
+//Country Components
 const AddCountries = Loader(
   lazy(() => import('src/content/applications/Countries/Add'))
 );
@@ -66,8 +81,34 @@ const EditCountries = Loader(
 );
 
 
+//States Components
+const AddStates = Loader(
+  lazy(() => import('src/content/applications/States/Add'))
+);
 
+const EditStates = Loader(
+  lazy(() => import('src/content/applications/States/Edit'))
+);
+//States Components
+const AddCities = Loader(
+  lazy(() => import('src/content/applications/Cities/Add'))
+);
 
+const EditCities = Loader(
+  lazy(() => import('src/content/applications/Cities/Edit'))
+);
+//Roles Components
+const AddRole = Loader(
+  lazy(() => import('src/content/applications/Role/Add'))
+);
+const EditRole = Loader(
+  lazy(() => import('src/content/applications/Role/Edit'))
+);
+const ViewRole = Loader(
+  lazy(() => import('src/content/applications/Role/View'))
+);
+
+// User Components
 const AddUsers = Loader(
   lazy(() => import('src/content/applications/UsersLists/Add'))
 );
@@ -209,6 +250,15 @@ const routes: RouteObject[] = [
         //   }
         // ]
       },
+
+      {
+        path: 'role',
+        element:<Role/> , 
+         children: [
+       
+        
+         ]
+      },
       {
         path: 'permissions',
         element:<Permission/> , 
@@ -233,9 +283,23 @@ const routes: RouteObject[] = [
          ]
       },
       {
+        path: 'states',
+        element:<States/> , 
+         children: [
+         ]
+      },
+      {
+        path: 'cities',
+        element:<Cities/> , 
+         children: [
+         ]
+      },
+      {
         path: 'adduser',
         element: <AddUsers/>
       },
+
+      // Permission Coponents
       {
         path: 'add',
         element: <AddPermission />
@@ -244,6 +308,8 @@ const routes: RouteObject[] = [
         path: 'edit/:id',
         element: <Editpermission />
       },
+
+      // Country Components
       {
         path: 'addcountry',
         element: <AddCountries />
@@ -252,6 +318,37 @@ const routes: RouteObject[] = [
         path: 'editcountry/:id',
         element: <EditCountries />
       },
+        // States Components
+        {
+          path: 'addstate',
+          element: <AddStates />
+        },
+        {
+          path: 'editstate/:id',
+          element: <EditStates />
+        },
+         // Cities Components
+         {
+          path: 'addcity',
+          element: <AddCities />
+        },
+        {
+          path: 'editcity/:id',
+          element: <EditCities />
+        },
+        // Roles Components
+        {
+          path: 'addrole',
+          element: <AddRole />
+        },
+        {
+          path: 'editrole/:id',
+          element: <EditRole />
+        },
+        {
+          path: 'viewrole/:id',
+          element: <ViewRole />
+        },
     ]
     
     

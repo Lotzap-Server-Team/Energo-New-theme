@@ -205,7 +205,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           <BulkActions />
         </Box>
       )}
-      {!selectedBulkActions && <CardHeader title="Companies List" />}
+      {!selectedBulkActions && <CardHeader title="Countries List" />}
       <Divider />
       <TableContainer>
         <Table>
@@ -283,7 +283,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
               
 
                   <TableCell align="center">
-                    <Tooltip title="Edit Company" arrow>
+                    <Tooltip title="Edit Countries" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -302,7 +302,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         </Button>
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Delete Company" arrow>
+                    <Tooltip title="Delete Countries" arrow>
                       <IconButton
                         sx={{
                           '&:hover': { background: theme.colors.error.lighter },
