@@ -22,7 +22,8 @@ import {
   MenuItem,
   Typography,
   useTheme,
-  CardHeader
+  CardHeader,
+  Button
 } from '@mui/material';
 
 import Label from 'src/components/Label';
@@ -30,6 +31,8 @@ import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
+import { Link } from 'react-router-dom';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -296,7 +299,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         color="inherit"
                         size="small"
                       >
+                        <Button component={Link}  to={'/management/editcompany/'+cryptoOrder.id}>
                         <EditTwoToneIcon fontSize="small" />
+                    </Button>
+                    <Button component={Link}  to={'/management/viewcompany/'+cryptoOrder.id}>
+                        <VisibilityIcon fontSize="small" />
+                    </Button>
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete Company" arrow>

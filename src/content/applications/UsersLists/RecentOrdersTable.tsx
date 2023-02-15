@@ -33,7 +33,7 @@ import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
 interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
@@ -329,11 +329,15 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         sx={{
                           '&:hover': { background: theme.colors.error.lighter },
                           color: theme.palette.error.main
+                          
                         }}
                         color="inherit"
                         size="small"
                       >
+                         <Button component={Link}  sx={{width:1}} to={'/management/viewuser/'+ cryptoOrder.id}> <VisibilityIcon fontSize="small"/> </Button>
+                       
                         <DeleteTwoToneIcon fontSize="small" />
+
                       </IconButton>
                     </Tooltip>
                   </TableCell>

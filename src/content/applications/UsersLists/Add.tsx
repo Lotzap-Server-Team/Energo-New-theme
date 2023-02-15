@@ -494,7 +494,7 @@ const getError = (msg: string): JSX.Element => {
                         >
                         Submit
                           </Button>
-                        <Button variant="contained" sx={{ml:2}}>Cancel </Button>
+                        <Button variant="contained" sx={{ml:2}} component={Link}  to={'/management/profile'}>Cancel </Button>
                       </Toolbar> 
                   </div>
                 </Box>

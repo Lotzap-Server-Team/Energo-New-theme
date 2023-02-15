@@ -39,6 +39,18 @@ const AddUsers = Loader(
 const EditUsers = Loader(
   lazy(() => import('src/content/applications/UsersLists/Edit'))
 );
+const ViewUsers = Loader(
+  lazy(() => import('src/content/applications/UsersLists/View'))
+);
+const AddCompany = Loader(
+  lazy(() => import('src/content/applications/Transactions/Add'))
+);
+const EditCompany = Loader(
+  lazy(() => import('src/content/applications/Transactions/Edit'))
+);
+const ViewCompany = Loader(
+  lazy(() => import('src/content/applications/Transactions/View'))
+);
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -184,6 +196,22 @@ const routes: RouteObject[] = [
       {
         path: 'edituser/:id',
         element: <EditUsers/>
+      },
+      {
+        path: 'viewuser/:id',
+        element: <ViewUsers/>
+      },
+      {
+        path: 'addcompany',
+        element: <AddCompany/>
+      },
+      {
+        path: 'editcompany/:id',
+        element: <EditCompany/>
+      },
+      {
+        path: 'viewcompany/:id',
+        element: <ViewCompany/>
       },
     ]
   },
