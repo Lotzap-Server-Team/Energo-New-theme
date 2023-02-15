@@ -18,7 +18,7 @@ function Footer() {
       >
         <Box>
           <Typography variant="subtitle1">
-            &copy; 2023 Lemosys. All Rights Reserved.
+            &copy; 2023. All Rights Reserved.
           </Typography>
         </Box>
         <Typography

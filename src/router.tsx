@@ -30,6 +30,9 @@ const Messenger = Loader(
 const Transactions = Loader(
   lazy(() => import('src/content/applications/Transactions'))
 );
+// const addcompany = Loader(
+//   lazy(() => import('src/content/applications/Transactions/Addcompany'))
+// );
 const UserLists = Loader(
   lazy(() => import('src/content/applications/UsersLists'))
 );
@@ -39,8 +42,9 @@ const Permission = Loader(
 const Countries = Loader(
   lazy(() => import('src/content/applications/Countries'))
 );
-
-
+const EditUsers = Loader(
+  lazy(() => import('src/content/applications/UsersLists/Edit'))
+);
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -63,6 +67,9 @@ const AddCountries = Loader(
 
 const EditCountries = Loader(
   lazy(() => import('src/content/applications/Countries/Edit'))
+);
+const AddCompanyData = Loader(
+  lazy(() => import('src/content/applications/Transactions/Addcompany'))
 );
 
 
@@ -187,27 +194,35 @@ const routes: RouteObject[] = [
         path: '',
         element: <Navigate to="transactions" replace />
       },
+
       {
-        path: 'transactions',
-        element: <Transactions />
+        path: 'transactions', 
+         children: [
+          {
+            path:'',
+            element:<Transactions/>
+          },
+          {
+            path: 'add-company',
+            element: <AddCountries />
+          },
+        //  {
+        //     path: 'add-company',
+        //     element: <addcompany/>
+        //   }
+         ]
       },
+      // {
+      //   path: 'transactions',
+      //   element: <Transactions />
+      // },
+      // {
+      //   path: 'add-company',
+      //   element: <addCompany/>
+      // },
       {
         path: 'profile',
         element:<UserLists/>
-        // children: [
-        //   {
-        //     path: '',
-        //     element: <Navigate to="details" replace />
-        //   },
-        //   {
-        //     path: 'details',
-        //     element: <UserProfile />
-        //   },
-        //   {
-        //     path: 'settings',
-        //     element: <UserSettings />
-        //   }
-        // ]
       },
       {
         path: 'permissions',
@@ -251,6 +266,14 @@ const routes: RouteObject[] = [
       {
         path: 'editcountry/:id',
         element: <EditCountries />
+      },
+      {
+        path: 'add-company',
+        element: <AddCompanyData />
+      },
+      {
+        path: 'edit-company/:id',
+        element: <AddCompanyData />
       },
     ]
     

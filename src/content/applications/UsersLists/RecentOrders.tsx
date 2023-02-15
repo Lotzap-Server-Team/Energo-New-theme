@@ -29,7 +29,7 @@ useEffect(()=>{
 
 const userList = ()=>{
   store.dispatch(getUsers()).then((res: any) => {
-    console.log("my res",res)
+    console.log("my res", res)
     if (res && res.payload.users) {
       setCompanyData(res.payload.users);
     }

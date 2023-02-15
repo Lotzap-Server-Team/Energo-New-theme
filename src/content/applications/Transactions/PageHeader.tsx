@@ -1,6 +1,7 @@
 import { Typography, Button, Grid } from '@mui/material';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+import { Link } from 'react-router-dom';
 
 function PageHeader() {
   const user = {
@@ -22,6 +23,8 @@ function PageHeader() {
           sx={{ mt: { xs: 2, md: 0 } }}
           variant="contained"
           startIcon={<AddTwoToneIcon fontSize="small" />}
+          component={Link}
+          to={'/management/add-company'}
         >
           Add Company
         </Button>

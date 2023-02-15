@@ -33,9 +33,10 @@ function App() {
         setOnload(true);
         if(token ==null){
          navigate("/");
-        }else{
-          navigate('/dashboards')
         }
+        // else{
+        //   navigate('/dashboards')
+        // }
      } 
   }); 
   return (

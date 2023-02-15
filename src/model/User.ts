@@ -21,7 +21,7 @@ export interface Permission {
 export interface User {
     id?: any;
     companyName?: string;
-    companyId?: string;
+    companyId?: any;
     firstName?: string;
     lastName?: string;
     email?: string;

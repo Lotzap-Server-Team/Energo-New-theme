@@ -2,6 +2,7 @@ import { FC, ChangeEvent, useState } from 'react';
 import { format } from 'date-fns';
 import numeral from 'numeral';
 import PropTypes from 'prop-types';
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Tooltip,
   Divider,
@@ -22,13 +23,16 @@ import {
   MenuItem,
   Typography,
   useTheme,
-  CardHeader
+  CardHeader,
+  Button,
+
 } from '@mui/material';
 
 import Label from 'src/components/Label';
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import BulkActions from './BulkActions';
 
 interface RecentOrdersTableProps {
@@ -94,6 +98,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
+
+
+  const params = useParams();
 
   const statusOptions = [
     {
@@ -183,7 +190,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       )}
       {!selectedBulkActions && (
         <CardHeader
-          title="Companies List"
+          title="Users List"
         />
       )}
       <Divider />
@@ -200,11 +207,13 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                 />
               </TableCell>
               <TableCell>Company Name</TableCell>
+              <TableCell>First Name</TableCell>
+              <TableCell>Last Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
-              <TableCell align="right">Web Site</TableCell>
-              <TableCell align="right">Status</TableCell>
+            
               <TableCell align="right">Actions</TableCell>
+              <TableCell align="right">Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -249,28 +258,29 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
+                      {cryptoOrder.first_name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {cryptoOrder.last_name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
                       {cryptoOrder.email}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {cryptoOrder.phone}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
                       {/* {cryptoOrder.website.slice(0, 10)} */}
                     </Typography>
                   </TableCell>
@@ -282,11 +292,24 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
+                       {cryptoOrder.phone.slice(0, 10)}
+                      {/* {cryptoOrder.is_active == '1'? 'Active':'Inactive'} */}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      
                       {cryptoOrder.is_active == '1'? 'Active':'Inactive'}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-                    <Tooltip title="Edit Company" arrow>
+                    {/* <Tooltip title="Edit Company" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -297,7 +320,35 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         color="inherit"
                         size="small"
                       >
-                        <EditTwoToneIcon fontSize="small" />
+                        <Button component={Link}  to={'/management/edituser/'+ cryptoOrder.id}>
+                       <EditTwoToneIcon  fontSize="small"/>
+                        </Button>
+                      </IconButton>
+                    </Tooltip> */}
+                    <Tooltip title="Delete Company" arrow>
+                      <IconButton
+                        sx={{
+                          '&:hover': {  background: theme.colors.primary.lighter },
+                          color:theme.palette.primary.main
+                        }}
+                        color="inherit"
+                        size="small"
+                      >
+                        <Button component={Link}  to={'/management/edituser/'+ cryptoOrder.id}>
+                       <EditTwoToneIcon  fontSize="small"/>
+                        </Button>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete Company" arrow>
+                      <IconButton
+                         sx={{
+                          '&:hover': {  background: theme.colors.primary.lighter },
+                          color:theme.palette.primary.main
+                        }}
+                        color="inherit"
+                        size="small"
+                      >
+                        <VisibilityIcon  fontSize="small" />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete Company" arrow>
