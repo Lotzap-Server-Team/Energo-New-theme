@@ -19,12 +19,12 @@ function PageHeader() {
         </Typography>
       </Grid>
       <Grid item>
-        <Button
+        <Button 
           sx={{ mt: { xs: 2, md: 0 } }}
           variant="contained"
+          component={Link} to="/management/addcompany"
           startIcon={<AddTwoToneIcon fontSize="small" />}
-          component={Link}
-          to={'/management/add-company'}
+
         >
           Add Company
         </Button>

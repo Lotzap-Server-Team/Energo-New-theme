@@ -35,7 +35,7 @@ import VolumeDown from '@mui/icons-material/VolumeDown';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 
 import Switch from '@mui/material/Switch';
-import { createUser, getCompanies, getUser } from 'src/redux/store/reducers/slices/UserSlice';
+import { createUser, getCompanies, getUser, updateUser } from 'src/redux/store/reducers/slices/UserSlice';
 import { store } from 'src/redux/store';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
@@ -150,16 +150,13 @@ function editUsers() {
         profile_picture:file,   
       } 
       console.log("my all form data", formData)
-      store.dispatch(createUser(formData)).then((res: any) => {
-        
+      store.dispatch(updateUser(formData)).then((res: any) => {
         if (res.payload.status == true) {
           toast.success(res.payload?.message)
           navigate("/users");
         } else {
           toast.error(res.payload?.message)
         }
-
-
       });                               
     // }     
 
@@ -187,21 +184,21 @@ useEffect(() => {
       store.dispatch(getUser(formData)).then((res: any) => {
           setOnload(true);
           if(res && res.payload){
-            console.log("my res", res.payload);
-              setId(res.payload.users?.id);
+            console.log("my res", res.payload.users?.first_name);
+              setId(res.payload.user?.id);
               setCompanyId(res.payload.user?.company_id);
               setEmail(res.payload.user?.email);
-              setPhone(res.payload.users?.phone);
-              setAddress(res.payload.users?.address?.address);
-              setStreet(res.payload.users?.address?.street);
-              setFirstName(res.payload.users?.first_name);
-              setLastName(res.payload.users?.last_name);
-              setCity(res.payload.users?.address?.city);
-              setCountry(res.payload.users?.address?.country);
-              setPostalCode(res.payload.users?.address?.zipcode);
-              setPermission(res.payload.users?.permission);
+              setPhone(res.payload.user?.phone);
+              setAddress(res.payload.user?.address?.address);
+              setStreet(res.payload.user?.address?.street);
+              setFirstName(res.payload.user?.first_name);
+              setLastName(res.payload.user?.last_name);
+              setCity(res.payload.user?.address?.city);
+              setCountry(res.payload.user?.address?.country);
+              setPostalCode(res.payload.user?.address?.zipcode);
+              setPermission(res.payload.user?.permission);
              // setPassword(res.payload.users?.password);
-              setGlobalUser(res.payload.users?.globalUser);
+              setGlobalUser(res.payload.user?.globalUser);
               
               if(res.payload.user.is_global == '1'){
                 (document.getElementById('checkBox')as any).checked = true;
@@ -225,13 +222,7 @@ useEffect(() => {
       <Helmet>
         <title>Forms - Components</title>
       </Helmet>
-      <PageTitleWrapper>
-        <PageTitle
-          heading="Forms"
-          subHeading="Components that are used to build interactive placeholders used for data collection from users."
-          docs="https://material-ui.com/components/text-fields/"
-        />
-      </PageTitleWrapper>
+    
       <Container maxWidth="lg">
         <Grid
           container
@@ -239,6 +230,7 @@ useEffect(() => {
           justifyContent="center"
           alignItems="stretch"
           spacing={3}
+          mt={3}
         >
           <Grid item xs={12}>
             <Card>
@@ -283,17 +275,18 @@ useEffect(() => {
                     <FormControlLabel
                       control={<Checkbox onChange={(e) => {
                         setGlobalUser(e.target.value);
-                      
+                    
                       }} 
                       name="global_user" value={globalUser} />}
                       label="Label"
                     />
-                    <TextField
-                    margin="normal"
+                        <TextField
+                            margin="normal"
                             id="first_name"
                             required
+                            value={firstName}
                             name="first_name"
-                            
+                            autoFocus
                             label="First Name"
                             fullWidth
                             onChange={(e) => {
@@ -303,14 +296,14 @@ useEffect(() => {
                                 first_name: !ifEmpty(e.target.value),
                               }));
                             }}
-                    />
-                   {dirtyFields["first_name"] && getError("FirstName is requried")}
+                          />
+                             {dirtyFields["first_name"] && getError("firstName is requried")}
                    <TextField
                             margin="normal"
                             id="last_name"
                             required
                             name="last_name"
-                            
+                            value={lastName}
                             label="Last Name"
                             fullWidth
                             onChange={(e) => {
@@ -331,6 +324,7 @@ useEffect(() => {
                             id="phone"
                             label="Phone"
                             name="phone"
+                            value={phone}
                             onChange={(e) => {
                              setPhone(e.target.value);
                              setDirtyFields((dirty) => ({
@@ -348,6 +342,7 @@ useEffect(() => {
                               id="address"
                               label="Address"
                               name="address1"
+                              value={address}
                               onChange={(e) => {
                                 setAddress(e.target.value);
                                 setDirtyFields((dirty) => ({
@@ -365,6 +360,7 @@ useEffect(() => {
                               margin="normal"
                               required
                               fullWidth
+                              value={street}
                               id="street 1"
                               label="Street"
                               name="address2"
@@ -385,6 +381,7 @@ useEffect(() => {
                               fullWidth
                               id="city"
                               label="City"
+                              value={city}
                               name="city"
                               onChange={(e) => {
                                 setCity(e.target.value);
@@ -401,6 +398,7 @@ useEffect(() => {
                             required
                             fullWidth
                             id="zipcode"
+                            value={postalCode}
                             label="Zipcode"
                             name="postalcode"
                             onChange={(e) => {
@@ -421,6 +419,7 @@ useEffect(() => {
                             id="country"
                             label="Country"
                             name="country"
+                            value={country}
                             onChange={(e) => {
                               setCountry(e.target.value);
                               setDirtyFields((dirty) => ({
@@ -450,6 +449,7 @@ useEffect(() => {
                             required
                             fullWidth
                             id="email"
+                            value={email}
                             label="Email"
                             name="email" 
                             onChange={(e) => {
@@ -478,34 +478,24 @@ useEffect(() => {
                           />
                         
                         </RadioGroup>
-                      </FormControl>
-                      <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        onChange={(e) => {
-                          setPassword(e.target.value);
-                        }} 
-                      />
-                      <FormControl style={{ marginLeft: '20px' }}>
+                        <FormControl >
                      
-                        <RadioGroup
-                          aria-labelledby="demo-radio-buttons-group-label"
-                          defaultValue="female"
-                          name="radio-buttons-group"
-                        >
-                          <FormControlLabel
-                             value="author"
-                            control={<Radio />}
-                            label="author"
-                          />
-                        
-                        </RadioGroup>
+                     <RadioGroup
+                       aria-labelledby="demo-radio-buttons-group-label"
+                       defaultValue="female"
+                       name="radio-buttons-group"
+                     >
+                       <FormControlLabel
+                          value="author"
+                         control={<Radio />}
+                         label="author"
+                       />
+                     
+                     </RadioGroup>
+                   </FormControl>
                       </FormControl>
+                     
+                  
                     
                       <div style={{marginLeft:"10px"}}>
                    <p>  Upload profile</p>
@@ -520,9 +510,9 @@ useEffect(() => {
                           type="submit"
                           variant="contained"
                         >
-                        Submit
+                        UPDATE
                           </Button>
-                        <Button variant="contained" sx={{ml:2}}>Cancel </Button>
+                        <Button variant="contained" sx={{ml:2}} component={Link}  to={'/management/profile'}>Cancel </Button>
                       </Toolbar> 
                   </div>
                 </Box>
