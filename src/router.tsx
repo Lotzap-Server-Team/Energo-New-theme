@@ -36,6 +36,9 @@ const UserLists = Loader(
 const AddUsers = Loader(
   lazy(() => import('src/content/applications/UsersLists/Add'))
 );
+const EditUsers = Loader(
+  lazy(() => import('src/content/applications/UsersLists/Edit'))
+);
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -177,6 +180,10 @@ const routes: RouteObject[] = [
       {
         path: 'adduser',
         element: <AddUsers/>
+      },
+      {
+        path: 'edituser/:id',
+        element: <EditUsers/>
       },
     ]
   },

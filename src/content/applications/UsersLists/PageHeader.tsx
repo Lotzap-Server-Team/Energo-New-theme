@@ -1,5 +1,5 @@
 import { Typography, Button, Grid } from '@mui/material';
-
+import { Link,useNavigate } from "react-router-dom";
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
 function PageHeader() {
@@ -7,6 +7,7 @@ function PageHeader() {
     name: 'Admin',
     avatar: '/static/images/avatars/1.jpg'
   };
+
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
@@ -21,9 +22,10 @@ function PageHeader() {
         <Button
           sx={{ mt: { xs: 2, md: 0 } }}
           variant="contained"
+          component={Link} to="/management/adduser"
           startIcon={<AddTwoToneIcon fontSize="small" />}
         >
-          Add Company
+          Add User
         </Button>
       </Grid>
     </Grid>

@@ -21,7 +21,6 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { pink } from '@mui/material/colors';
 import Checkbox from '@mui/material/Checkbox';
-import { Link, useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Radio from '@mui/material/Radio';
@@ -30,14 +29,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import InputLabel from '@mui/material/InputLabel';
-
-import Stack from '@mui/material/Stack';
+import { Link , useParams ,useNavigate} from "react-router-dom";
 import Slider from '@mui/material/Slider';
 import VolumeDown from '@mui/icons-material/VolumeDown';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 
 import Switch from '@mui/material/Switch';
-import { createUser, getCompanies } from 'src/redux/store/reducers/slices/UserSlice';
+import { createUser, getCompanies, getUser } from 'src/redux/store/reducers/slices/UserSlice';
 import { store } from 'src/redux/store';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
@@ -61,10 +59,11 @@ const currencies = [
   }
 ];
 
-function addUsers() {
+function editUsers() {
   const [currency, setCurrency] = useState('EUR');
   const theme = useTheme();
   const navigate = useNavigate();
+  const [id,setId] = useState('');
   const [company_id,setCompanyId] = useState('');
   const [email,setEmail] = useState('');
   const [phone,setPhone] = useState('');
@@ -179,17 +178,46 @@ const getError = (msg: string): JSX.Element => {
     </span>
   );
 };
-  useEffect(() => {
 
-    // isValidData();
+useEffect(() => {
     if(onload==false){
-      setOnload(true);
-       store.dispatch(getCompanies()).then((res: any) => { 
-          if (res && res.payload.companies) {
-            setCompanies(res.payload.companies);
+    //   const userId = window.location.href.split('/')[5]
+    //   console.log("my id", window.location.href);
+      const formData = {id:'3'};  
+      store.dispatch(getUser(formData)).then((res: any) => {
+          setOnload(true);
+          if(res && res.payload){
+            console.log("my res", res.payload);
+              setId(res.payload.users?.id);
+              setCompanyId(res.payload.user?.company_id);
+              setEmail(res.payload.user?.email);
+              setPhone(res.payload.users?.phone);
+              setAddress(res.payload.users?.address?.address);
+              setStreet(res.payload.users?.address?.street);
+              setFirstName(res.payload.users?.first_name);
+              setLastName(res.payload.users?.last_name);
+              setCity(res.payload.users?.address?.city);
+              setCountry(res.payload.users?.address?.country);
+              setPostalCode(res.payload.users?.address?.zipcode);
+              setPermission(res.payload.users?.permission);
+             // setPassword(res.payload.users?.password);
+              setGlobalUser(res.payload.users?.globalUser);
+              
+              if(res.payload.user.is_global == '1'){
+                (document.getElementById('checkBox')as any).checked = true;
+               }else{
+                (document.getElementById('checkBox')as any).checked = false;
+               }
+
           } 
-       }); 
-      }
+      }); 
+
+      store.dispatch(getCompanies()).then((res: any) => { 
+        if (res && res.payload.companies) {
+          setCompanies(res.payload.companies);
+        } 
+     }); 
+    }
    });
 
   return (
@@ -511,4 +539,4 @@ const getError = (msg: string): JSX.Element => {
   );
 }
 
-export default addUsers;
+export default editUsers;
