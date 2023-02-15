@@ -33,9 +33,14 @@ const Transactions = Loader(
 const UserLists = Loader(
   lazy(() => import('src/content/applications/UsersLists'))
 );
-const AddUsers = Loader(
-  lazy(() => import('src/content/applications/UsersLists/Add'))
+const Permission = Loader(
+  lazy(() => import('src/content/applications/Permission'))
 );
+const Countries = Loader(
+  lazy(() => import('src/content/applications/Countries'))
+);
+
+
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -44,6 +49,36 @@ const UserSettings = Loader(
 );
 
 // Components
+
+const AddPermission = Loader(
+  lazy(() => import('src/content/applications/Permission/Add'))
+);
+
+const Editpermission = Loader(
+  lazy(() => import('src/content/applications/Permission/Edit'))
+);
+const AddCountries = Loader(
+  lazy(() => import('src/content/applications/Countries/Add'))
+);
+
+const EditCountries = Loader(
+  lazy(() => import('src/content/applications/Countries/Edit'))
+);
+
+
+
+
+const AddUsers = Loader(
+  lazy(() => import('src/content/applications/UsersLists/Add'))
+);
+
+
+
+// Components
+
+
+
+
 
 const Buttons = Loader(
   lazy(() => import('src/content/pages/Components/Buttons'))
@@ -175,10 +210,51 @@ const routes: RouteObject[] = [
         // ]
       },
       {
+        path: 'permissions',
+        element:<Permission/> , 
+         children: [
+         {
+            path: 'add',
+            element: <AddPermission />
+          },
+          {
+            path: 'edit',
+            element: <Editpermission />
+          },
+        
+         ]
+      },
+      {
+        path: 'countries',
+        element:<Countries/> , 
+         children: [
+       
+        
+         ]
+      },
+      {
         path: 'adduser',
         element: <AddUsers/>
       },
+      {
+        path: 'add',
+        element: <AddPermission />
+      },
+      {
+        path: 'edit/:id',
+        element: <Editpermission />
+      },
+      {
+        path: 'addcountry',
+        element: <AddCountries />
+      },
+      {
+        path: 'editcountry/:id',
+        element: <EditCountries />
+      },
     ]
+    
+    
   },
   {
     path: '/components',
