@@ -68,7 +68,7 @@ function Addpermission() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (isValidData()) {
+    // if (isValidData()) { 
       const formData = {
         country_id: country_id,
         name: name,
@@ -82,7 +82,7 @@ function Addpermission() {
           toast.error(res.payload?.message);
         }
       });
-    }
+    // }
   };
 
   function getCountrieData() {
@@ -140,9 +140,9 @@ function Addpermission() {
                           labelId="parent"
                           required
                           id="parent"
-                          value={parent} 
+                          value={country_id} 
                           label="Parent Category"
-                          onChange={(e)=> setParent(e.target.value)}
+                          onChange={(e)=> setCountry_Id(e.target.value)}
                         >
                           <MenuItem value="">-Select-</MenuItem>
 
