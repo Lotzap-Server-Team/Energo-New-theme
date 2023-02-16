@@ -7,6 +7,7 @@ import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
 
+
 const Loader = (Component) => (props) =>
   (
     <Suspense fallback={<SuspenseLoader />}>
@@ -45,9 +46,7 @@ const Permission = Loader(
 const Countries = Loader(
   lazy(() => import('src/content/applications/Countries'))
 );
-const EditUsers = Loader(
-  lazy(() => import('src/content/applications/UsersLists/Edit'))
-);
+
 const States = Loader(
   lazy(() => import('src/content/applications/States'))
 );
@@ -58,9 +57,6 @@ const Cities = Loader(
 
 
 
-const ViewUsers = Loader(
-  lazy(() => import('src/content/applications/UsersLists/View'))
-);
 const AddCompany = Loader(
   lazy(() => import('src/content/applications/Transactions/Add'))
 );
@@ -70,6 +66,13 @@ const EditCompany = Loader(
 const ViewCompany = Loader(
   lazy(() => import('src/content/applications/Transactions/View'))
 );
+const AddCompanyData = Loader(
+  lazy(() => import('src/content/applications/Transactions/CompanyFolders'))
+);
+const companyFoldersView = Loader(
+  lazy(() => import('src/content/applications/Transactions/FoldersView'))
+);
+
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -97,9 +100,7 @@ const AddCountries = Loader(
 const EditCountries = Loader(
   lazy(() => import('src/content/applications/Countries/Edit'))
 );
-const AddCompanyData = Loader(
-  lazy(() => import('src/content/applications/Transactions/Addcompany'))
-);
+
 
 
 //States Components
@@ -134,8 +135,13 @@ const AddUsers = Loader(
   lazy(() => import('src/content/applications/UsersLists/Add'))
 );
 
+const EditUsers = Loader(
+  lazy(() => import('src/content/applications/UsersLists/Edit'))
+);
 
-
+const ViewUsers = Loader(
+  lazy(() => import('src/content/applications/UsersLists/View'))
+);
 // Components
 
 
@@ -327,7 +333,14 @@ const routes: RouteObject[] = [
         path: 'adduser',
         element: <AddUsers/>
       },
-
+      {
+        path: 'adduser',
+        element: <AddUsers/>
+      },
+      {
+        path: 'edituser/:id',
+        element: <EditUsers/>
+      },
       // Permission Coponents
       {
         path: 'add',
@@ -348,13 +361,18 @@ const routes: RouteObject[] = [
         element: <EditCountries />
       },
       {
-        path: 'add-company',
+        path: 'show-company-folders/:id',
         element: <AddCompanyData />
       },
-      {
-        path: 'edit-company/:id',
-        element: <AddCompanyData />
-      },
+      
+      // {
+      //   path: 'folder-view/:id',
+      //   element: <companyFoldersView/>
+      // },
+      // {
+      //   path: 'edit-company/:id',
+      //   element: <AddCompanyData />
+      // },
         // States Components
         {
           path: 'addstate',

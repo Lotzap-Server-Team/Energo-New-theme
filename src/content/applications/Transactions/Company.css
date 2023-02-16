@@ -1,0 +1,61 @@
+/*------------- folder box----------- */
+.folder {
+    width: 150px;
+    height: 105px;
+    margin: 50px 50px;
+    float: left;
+    position: relative;
+    background: rgb(110,166,239);
+    background: linear-gradient(183deg, rgba(110,166,239,1) 11%, rgba(30,92,172,1) 100%);
+    border-radius: 0 6px 6px 6px;
+    transition: 0.10s ease-out;
+    color: #000000;
+    /* box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.59); */
+}
+/*-------------folder box----x------- */
+.folder:hover{
+  transform: scale(1.2);
+}
+/*-------------file opener----------- */
+.folder:before {
+    content: '';
+    width: 46%;
+    height: 21px;
+    clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+    border-radius: 4px 0px 0 0;
+    background-color: #1e5cac;
+    position: absolute;
+    top: -10.3px;
+    left: 0px;
+}
+/*-------------file opener----x------- */
+
+/*------------- Document ----------- */
+.folder:after {
+    content: '';
+    width: 29%;
+    height: 5px;
+    border-radius: 2px 2px 0 0;
+    background-color: #ffffff;
+    position: absolute;
+    top: 5.6px;
+    left: 4px;
+}
+/*-------------Document ----x------- */
+
+/*------------- text  ----------- */
+p{
+  position: absolute;
+  /* left: 124px; */
+  top: 75px;
+  margin: 0%;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+  color: white;
+    
+}
+.title-card {
+    /* float: right; */
+    display: flex;
+    justify-content: end;
+}
