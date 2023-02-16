@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 
 import {
   ListSubheader,
@@ -36,7 +36,6 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import { useSelector } from 'react-redux';
 
 
 
@@ -183,83 +182,6 @@ const SubMenuWrapper = styled(Box)(
 );
 
 function SidebarMenu() {
-  const [open, setOpen] = useState(true);
-  // const currentUser: any = useSelector((state: any) => state.user.currUser);
-  const user_id = localStorage.getItem('user_id')
-  const [companyIndex, setCompanyIndex] = useState(false);
-  const [indexUsers, setIndexUsers] = useState(false);
-  const [indexNotifications, setindexNotifications] = useState(false);
-  const [indexSecurityManagment, setIndexSecurityManagment] = useState(false);
-  const [indexSctivityLogs, setIndexSctivityLogs] = useState(false);
-  const [indexRoles, setIndexRoles] = useState(false);
-  const [indexPermissions, setIndexPermissions] = useState(false);
-  const [indexCountries, setIndexCountries] = useState(false);
-  const [indexStates, setIndexStates] = useState(false);
-  const [indexCities, setIndexCities] = useState(false);
-  const [indexDashboard, setIndexDashboard] = useState(false);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
-  function addPermission(){
-
-
-    function capitalizeFirstLetter(val:string) {
-      return val.charAt(0).toUpperCase() + val.slice(1);
-  }
-    var permissions:any = localStorage.getItem('permissions')
-    console.log("PRMISION", permissions);
-    var allPermission:any =JSON.parse(permissions)?JSON.parse(permissions):[];
-    if(allPermission.length != 0){
-    allPermission.forEach((per:any) => {
-      console.log("permisifpv", per);
-      if(capitalizeFirstLetter(per.flag) == "Companies"){
-        if(per.name == "Index"){
-          setCompanyIndex(true)
-        }
-      }
-      if(capitalizeFirstLetter(per.flag) == "Users"){
-        if(per.name == "Index"){
-          setIndexUsers(true)
-        }
-      }
-      if(capitalizeFirstLetter(per.flag) == "Countries"){
-        if(per.name == "Index"){
-          setIndexCountries(true)
-        }
-      }
-      if(capitalizeFirstLetter(per.flag) == "States"){
-        if(per.name == "Index"){
-          setIndexStates(true)
-        }
-      }
-      if(capitalizeFirstLetter(per.flag) == "Cities"){
-        if(per.name == "Index"){
-          setIndexCities(true)
-        }
-      }
-      if(capitalizeFirstLetter(per.flag) == "Notifications"){
-        if(per.name == "Index"){
-          setindexNotifications(true)
-        }
-      }
-      if(capitalizeFirstLetter(per.flag) == "Dashboard"){
-        if(per.name == "Index"){
-          setIndexDashboard(true)
-        }
-      }
-      if(capitalizeFirstLetter(per.flag) == "Activity Logs"){
-        if(per.name == "Index"){
-          setIndexSctivityLogs(true)
-        }
-      }
-      if(capitalizeFirstLetter(per.flag) == "Security Managment"){
-        if(per.name == "Index"){
-          setIndexSecurityManagment(true)
-        }
-      }
-    });
-  }
-}
   const { closeSidebar } = useContext(SidebarContext);
 
   return (
@@ -320,14 +242,14 @@ function SidebarMenu() {
         <List
           component="div"
           subheader={
-             <ListSubheader component="div" disableSticky>
+            <ListSubheader component="div" disableSticky>
               Dashboard
             </ListSubheader>
           }
         >
           <SubMenuWrapper>
             <List component="div">
-            {companyIndex &&  <ListItem component="div">
+              <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -337,8 +259,8 @@ function SidebarMenu() {
                 >
                   Companies List
                 </Button>
-              </ListItem> }
-              {indexUsers  &&  <ListItem component="div">
+              </ListItem>
+              <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -348,8 +270,8 @@ function SidebarMenu() {
                 >
                   User List
                 </Button>
-              </ListItem>}
-              {indexNotifications &&  <ListItem component="div">
+              </ListItem>
+              <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -359,8 +281,8 @@ function SidebarMenu() {
                 >
                   Notification 
                 </Button>
-              </ListItem>}
-              {indexSecurityManagment && <ListItem component="div">
+              </ListItem>
+              <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -370,8 +292,8 @@ function SidebarMenu() {
                 >
                   Security Management
                 </Button>
-              </ListItem>}
-              {indexSctivityLogs &&  <ListItem component="div">
+              </ListItem>
+              <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -381,8 +303,8 @@ function SidebarMenu() {
                 >
                   Activity Logs
                 </Button>
-              </ListItem>}
-              {user_id == '1' &&  <ListItem component="div">
+              </ListItem>
+              <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -392,8 +314,8 @@ function SidebarMenu() {
                 >
                   Roles 
                 </Button>
-              </ListItem>}
-              {user_id == '1' &&  <ListItem component="div">
+              </ListItem>
+              <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -403,8 +325,8 @@ function SidebarMenu() {
                 >
                   Permission List 
                 </Button>
-              </ListItem>}
-              {indexCountries && <ListItem component="div">
+              </ListItem>
+              <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -414,8 +336,8 @@ function SidebarMenu() {
                 >
                   Countries List 
                 </Button>
-              </ListItem>}
-              {indexStates &&  <ListItem component="div">
+              </ListItem>
+              <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -425,8 +347,8 @@ function SidebarMenu() {
                 >
                   States List 
                 </Button>
-              </ListItem>}
-              {indexCities && <ListItem component="div">
+              </ListItem>
+              <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -436,7 +358,7 @@ function SidebarMenu() {
                 >
                   Cities List 
                 </Button>
-              </ListItem>}
+              </ListItem>
             </List>
           </SubMenuWrapper>
         </List>

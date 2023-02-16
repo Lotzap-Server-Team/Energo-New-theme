@@ -1,15 +1,11 @@
 import { FC, ChangeEvent, useState } from 'react';
-import { format } from 'date-fns';
-import numeral from 'numeral';
+
 import PropTypes from 'prop-types';
 import {
   Tooltip,
   Divider,
   Box,
-  FormControl,
-  InputLabel,
   Card,
-  Checkbox,
   IconButton,
   Table,
   TableBody,
@@ -34,9 +30,12 @@ import BulkActions from './BulkActions';
 import { Navigate, useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { store } from 'src/redux/store';
-import { deletePermission, deleteState } from 'src/redux/store/reducers/slices/UserSlice';
+import {
+  deleteState,
+  statusState
+} from 'src/redux/store/reducers/slices/UserSlice';
 import { toast } from 'react-toastify';
-
+import Modal from '@mui/material/Modal';
 interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
@@ -101,26 +100,58 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     status: null
   });
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    pt: 2,
+    pb: 3
+  };
+
   const navigate = useNavigate();
   const params = useParams();
 
-  const deletePermissionById=(e:any)=>{
-    const formData ={
-      state_id :e
-    }
-    
-          store.dispatch(deleteState(formData)).then((res: any) => {
-            if(res.payload.status==true){
-            alert("Successfully")
-             toast.success("Successfull");
-            //  setPermissions([]);
-            }else{
-                 toast.error(res.payload.message);
-            }
-          }); 
-        }
-     
-      
+  const statusUpdateCountry = (e: any) => {
+    const formData = {
+      state_id: e
+    };
+
+    store.dispatch(statusState(formData)).then((res: any) => {
+      if (res.payload.status == true) {
+        toast.success(res.payload.message);
+        //  setPermissions([]);
+      } else {
+        toast.error(res.payload.message);
+      }
+    });
+  };
+
+  const deletePermissionById = (e: any) => {
+    const formData = {
+      state_id: e
+    };
+
+    store.dispatch(deleteState(formData)).then((res: any) => {
+      if (res.payload.status == true) {
+        alert('Successfully');
+        toast.success(res.payload.message);
+        //  setPermissions([]);
+      } else {
+        toast.error(res.payload.message);
+      }
+    });
+  };
 
   const statusOptions = [
     {
@@ -214,14 +245,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  color="primary"
-                  checked={selectedAllCryptoOrders}
-                  indeterminate={selectedSomeCryptoOrders}
-                  onChange={handleSelectAllCryptoOrders}
-                />
-              </TableCell>
               <TableCell>S.No.</TableCell>
               <TableCell>Country</TableCell>
               <TableCell>State</TableCell>
@@ -230,7 +253,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder: any) => {
+            {paginatedCryptoOrders.map((cryptoOrder: any, i: any) => {
               console.log(cryptoOrder, 'cryptoOrder777777777777777');
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
                 cryptoOrder.id
@@ -241,16 +264,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   key={cryptoOrder.id}
                   selected={isCryptoOrderSelected}
                 >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      color="primary"
-                      checked={isCryptoOrderSelected}
-                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, cryptoOrder.id)
-                      }
-                      value={isCryptoOrderSelected}
-                    />
-                  </TableCell>
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -259,7 +272,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.id}
+                      {i + 1}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -292,7 +305,24 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.is_active === 1? 'Active' : 'Inactive'}
+                      {cryptoOrder.is_active == 1 ? (
+                        <Button
+                          color="success"
+                          onClick={() => statusUpdateCountry(cryptoOrder.id)}
+                        >
+                          {' '}
+                          Active{' '}
+                        </Button>
+                      ) : (
+                        <Button
+                          color="error"
+                          //  sx={{
+                          // background: theme.colors.error.lighter,}}
+                          onClick={() => statusUpdateCountry(cryptoOrder.id)}
+                        >
+                          Inactive{' '}
+                        </Button>
+                      )}
                     </Typography>
                   </TableCell>
 
@@ -307,13 +337,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         }}
                         color="inherit"
                         size="small"
+                        component={Link}
+                        to={'/management/editstate/' + cryptoOrder.id}
                       >
-                        <Button
-                          component={Link}
-                          to={'/management/editstate/' + cryptoOrder.id}
-                        >
-                          <EditTwoToneIcon fontSize="small" />
-                        </Button>
+                        <EditTwoToneIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete State" arrow>
@@ -324,13 +351,51 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         }}
                         color="inherit"
                         size="small"
+                      
+                        onClick={handleOpen}
                       >
-                        <Button onClick={()=> {deletePermissionById(cryptoOrder.id)}} >
                         <DeleteTwoToneIcon fontSize="small" />
-                        </Button>
                       </IconButton>
                     </Tooltip>
                   </TableCell>
+                  {open && (
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="parent-modal-title"
+            aria-describedby="parent-modal-description"
+          >
+            <Box sx={{ ...style, width: 400 }}>
+              <Typography
+                variant="h4"
+                sx={{ color: 'black', textAlign: 'center' , mt : 3   }}
+              >
+                Are you sure want to delete this ?{' '}
+              </Typography>
+              <Box sx={{ textAlign : 'center' , mt : 3 }} >
+              <Button
+                variant="outlined"
+                sx={{
+                  background: '#3d6df9',
+                  color: 'white',
+                  mx:1
+                }}
+                onClick={handleClose}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ mx:1 , background: '#f44336', color: 'white' }}
+                  onClick={()=> {deletePermissionById(cryptoOrder.id)}}
+              >
+             
+                yes delete it
+              </Button>
+              </Box>
+            </Box>
+          </Modal>
+        )}
                 </TableRow>
               );
             })}
@@ -347,6 +412,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           rowsPerPage={limit}
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
+
+     
       </Box>
     </Card>
   );

@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
   useTheme
 } from '@mui/material/styles';
@@ -82,7 +84,6 @@ function Editcountry() {
       const countryId = window.location.href.split("/")[5];
       const formData = { country_id: countryId };
       store.dispatch(getCountry(formData)).then((res: any) => {
-        // console.log(res , "res from countryEdit ")
         if (res && res.payload.country?.title) {
           setCompanyId(res.payload.country?.id);
           setName(res.payload.country?.title);
