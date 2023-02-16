@@ -25,6 +25,7 @@ import {
   CardHeader,
   Button
 } from '@mui/material';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 import Label from 'src/components/Label';
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
@@ -173,6 +174,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   }
   const viewForm = (id:any)=>{
     navigate(`/management/viewcompany/${id}`);
+  }
+  const showFolders = (id:any)=>{
+    navigate(`/management/show-company-folders/${id}`);
   }
 
 
@@ -351,6 +355,20 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         size="small"
                       >
                         <DeleteTwoToneIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete Company" arrow onClick={(e)=>{showFolders(cryptoOrder.id)}}>
+                      <IconButton
+                         sx={{
+                          '&:hover': {
+                            background: theme.colors.primary.lighter
+                          },
+                          color: theme.palette.primary.main
+                        }}
+                        color="inherit"
+                        size="small"
+                      >
+                           <FileCopyIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
                   </TableCell>

@@ -7,6 +7,7 @@ import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
 
+
 const Loader = (Component) => (props) =>
   (
     <Suspense fallback={<SuspenseLoader />}>
@@ -70,6 +71,13 @@ const EditCompany = Loader(
 const ViewCompany = Loader(
   lazy(() => import('src/content/applications/Transactions/View'))
 );
+const AddCompanyData = Loader(
+  lazy(() => import('src/content/applications/Transactions/CompanyFolders'))
+);
+const companyFoldersView = Loader(
+  lazy(() => import('src/content/applications/Transactions/FoldersView'))
+);
+
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -97,9 +105,7 @@ const AddCountries = Loader(
 const EditCountries = Loader(
   lazy(() => import('src/content/applications/Countries/Edit'))
 );
-const AddCompanyData = Loader(
-  lazy(() => import('src/content/applications/Transactions/Addcompany'))
-);
+
 
 
 //States Components
@@ -348,13 +354,18 @@ const routes: RouteObject[] = [
         element: <EditCountries />
       },
       {
-        path: 'add-company',
+        path: 'show-company-folders/:id',
         element: <AddCompanyData />
       },
-      {
-        path: 'edit-company/:id',
-        element: <AddCompanyData />
-      },
+      
+      // {
+      //   path: 'folder-view/:id',
+      //   element: <companyFoldersView/>
+      // },
+      // {
+      //   path: 'edit-company/:id',
+      //   element: <AddCompanyData />
+      // },
         // States Components
         {
           path: 'addstate',
