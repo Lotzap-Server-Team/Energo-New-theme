@@ -34,6 +34,9 @@ import BulkActions from './BulkActions';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import Badge from '@mui/material/Badge';
+import MailIcon from '@mui/icons-material/Mail';
+
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -166,7 +169,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     setLimit(parseInt(event.target.value));
   };
   const goEditForm = (id:any)=>{
-    navigate(`/management/edit-company/${id}`);
+    navigate(`/management/editcompany/${id}`);
+  }
+  const viewForm = (id:any)=>{
+    navigate(`/management/viewcompany/${id}`);
   }
 
 
@@ -201,14 +207,15 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell padding="checkbox">
+              {/* <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
                   checked={selectedAllCryptoOrders}
                   indeterminate={selectedSomeCryptoOrders}
                   onChange={handleSelectAllCryptoOrders}
                 />
-              </TableCell>
+              </TableCell> */}
+              <TableCell>S.No</TableCell>
               <TableCell>Company Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
@@ -218,7 +225,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder:any) => {
+            {paginatedCryptoOrders.map((cryptoOrder:any, i) => {
               console.log(cryptoOrder,"cryptoOrdercryptoOrdercryptoOrder");
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
                 cryptoOrder.id
@@ -229,7 +236,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   key={cryptoOrder.id}
                   selected={isCryptoOrderSelected}
                 >
-                  <TableCell padding="checkbox">
+                  {/* <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
                       checked={isCryptoOrderSelected}
@@ -238,6 +245,17 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       }
                       value={isCryptoOrderSelected}
                     />
+                  </TableCell> */}
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {i+1}
+                    </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography
@@ -291,7 +309,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.is_active == '1'? 'Active':'Inactive'}
+                      {cryptoOrder.is_active == '1'? <Button  color="success">Active</Button>:<Button  color="error">Inactive</Button>}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
@@ -306,12 +324,21 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         color="inherit"
                         size="small"
                       >
-                        <Button component={Link}  to={'/management/editcompany/'+cryptoOrder.id}>
                         <EditTwoToneIcon fontSize="small" />
-                    </Button>
-                    <Button component={Link}  to={'/management/viewcompany/'+cryptoOrder.id}>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Edit Company" arrow onClick={(e)=>{viewForm(cryptoOrder.id)}}>
+                      <IconButton
+                        sx={{
+                          '&:hover': {
+                            background: theme.colors.primary.lighter
+                          },
+                          color: theme.palette.primary.main
+                        }}
+                        color="inherit"
+                        size="small"
+                      >
                         <VisibilityIcon fontSize="small" />
-                    </Button>
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete Company" arrow>

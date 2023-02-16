@@ -34,9 +34,9 @@ function App() {
         if(token ==null){
          navigate("/");
         }
-        else{
-          navigate('/dashboards')
-        }
+        // else{
+        //   navigate('/dashboards')
+        // }
      } 
   }); 
   return (
