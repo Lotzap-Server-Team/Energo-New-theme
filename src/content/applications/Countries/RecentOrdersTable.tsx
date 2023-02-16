@@ -34,8 +34,11 @@ import BulkActions from './BulkActions';
 import { Navigate, useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { store } from 'src/redux/store';
-import { deleteCountry, deletePermission } from 'src/redux/store/reducers/slices/UserSlice';
-import { toast } from 'react-toastify';
+import { deleteCountry, StatusCountry } from 'src/redux/store/reducers/slices/UserSlice';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Modal from '@mui/material/Modal';
+
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -104,6 +107,25 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const navigate = useNavigate();
   const params = useParams();
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    pt: 2,
+    pb: 3
+  };
+
   function deletecountry(e: any) {
         const formdata = {
           country_id: e , 
@@ -118,6 +140,22 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
         });
       }
   
+
+
+  const statusUpdateCountry = (e: any) => {
+    const formData = {
+      country_id: e,
+    };
+    store.dispatch(StatusCountry(formData)).then((res: any) => {
+      if (res.payload.status == true) {
+        toast.success(res.payload.message);
+        // alert("Successfully") 
+        // setCountries([]);
+      } else {
+        toast.error(res.payload.message);
+      }
+    });
+  };
 
   const statusOptions = [
     {
@@ -211,14 +249,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  color="primary"
-                  checked={selectedAllCryptoOrders}
-                  indeterminate={selectedSomeCryptoOrders}
-                  onChange={handleSelectAllCryptoOrders}
-                />
-              </TableCell>
+             
               <TableCell>S.No.</TableCell>
               <TableCell>Countries </TableCell>
               <TableCell>Status</TableCell>
@@ -226,7 +257,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder: any) => {
+            {paginatedCryptoOrders.map((cryptoOrder: any , i : any) => {
               console.log(cryptoOrder, 'cryptoOrdercryptoOrdercryptoOrder');
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
                 cryptoOrder.id
@@ -237,16 +268,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   key={cryptoOrder.id}
                   selected={isCryptoOrderSelected}
                 >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      color="primary"
-                      checked={isCryptoOrderSelected}
-                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, cryptoOrder.id)
-                      }
-                      value={isCryptoOrderSelected}
-                    />
-                  </TableCell>
+                 
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -255,7 +277,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.id}
+                      {i+1}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -277,7 +299,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.is_active ==1 ? "Active" : "Inactive"}
+                      {cryptoOrder.is_active ==1 ? <Button color="success"  onClick={()=> statusUpdateCountry(cryptoOrder.id)}
+                          > Active </Button> :  <Button color='error'
+                          //  sx={{
+                          // background: theme.colors.error.lighter,}}
+                           onClick={()=> statusUpdateCountry(cryptoOrder.id)} > 
+                           Inactive </Button>}
                     </Typography>
                   </TableCell>
               
@@ -293,13 +320,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         }}
                         color="inherit"
                         size="small"
+                        component={Link}
+                        to={'/management/editcountry/' + cryptoOrder.id}
                       >
-                        <Button
-                          component={Link}
-                          to={'/management/editcountry/' + cryptoOrder.id}
-                        >
+                       
                           <EditTwoToneIcon fontSize="small" />
-                        </Button>
+                      
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete Countries" arrow>
@@ -310,13 +336,49 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         }}
                         color="inherit"
                         size="small"
-                      >
-                        <Button onClick={()=> {deletecountry(cryptoOrder.id)}} >
-                        <DeleteTwoToneIcon fontSize="small" />
-                        </Button>
+                        onClick={handleOpen} >
+                        <DeleteTwoToneIcon sx={{ color:"red" }}  fontSize="small"  />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
+                  {open && (
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="parent-modal-title"
+            aria-describedby="parent-modal-description"
+          >
+            <Box sx={{ ...style, width: 400 }}>
+              <Typography
+                variant="h4"
+                sx={{ color: 'black', textAlign: 'center' , mt : 3   }}
+              >
+                Are you sure want to delete this ?{' '}
+              </Typography>
+              <Box sx={{ textAlign : 'center' , mt : 3 }} >
+              <Button
+                variant="outlined"
+                sx={{
+                  background: '#3d6df9',
+                  color: 'white',
+                  mx:1
+                }}
+                onClick={handleClose}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ mx:1 , background: '#f44336', color: 'white' }}
+                  onClick={()=> { deleteCountry(cryptoOrder.id)}}
+              >
+             
+                yes delete it
+              </Button>
+              </Box>
+            </Box>
+          </Modal>
+        )}
                 </TableRow>
               );
             })}

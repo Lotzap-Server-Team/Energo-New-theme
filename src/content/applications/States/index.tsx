@@ -13,7 +13,7 @@ function ApplicationsTransactions() {
         <title>Transactions - Applications</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageHeader />
+        <PageHeader  />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
