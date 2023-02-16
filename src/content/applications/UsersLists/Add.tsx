@@ -212,22 +212,15 @@ const getError = (msg: string): JSX.Element => {
           alignItems="stretch"
           spacing={3}
         >
-          <Grid item xs={12}>
+          <Grid item xs={12} >
             <Card>
-              <CardHeader title="Input Fields" />
+              <CardHeader title="Add Company" />
               <Divider />
               <CardContent>
-                <Box
-                  component="form"
-                  sx={{
-                    '& .MuiTextField-root': { m: 1, width: '50ch' }
-                  }}
-                  noValidate
-                  autoComplete="off"
-                  onSubmit={handleSubmit}
-                >
-                  <div>
-                  <FormControl  sx={{ width: '44%', mr:3, ml:1 }}>
+              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                  <Grid container spacing={2} rowSpacing={1} >
+                      <Grid item xs={6} sm={6} mt={2}>
+                      <FormControl fullWidth >
                       <InputLabel id="company_name_label">Company Name</InputLabel>
                       <Select
                         labelId="company_name_label"
@@ -252,16 +245,23 @@ const getError = (msg: string): JSX.Element => {
                           ))} 
                        </Select>
                     </FormControl>
-                    <FormControlLabel
-                      control={<Checkbox onChange={(e) => {
-                        setGlobalUser(e.target.value);
-                      
-                      }} 
-                      name="global_user" value={globalUser} />}
-                      label="Label"
-                    />
-                    <TextField
-                    margin="normal"
+                      </Grid>
+                      <Grid item xs={2} sm={6} mt={2}>
+                      <FormControlLabel
+                            control={<Checkbox  
+                            onChange={(e) => {
+                              setGlobalUser(e.target.value);
+                            
+                            }} 
+                            name="global_user" value={globalUser} />}
+                            label="Global User"
+                            sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}  
+                        />
+                        
+                      </Grid>
+                      <Grid item xs={6} sm={6}>
+                          <TextField
+                            margin="normal"
                             id="first_name"
                             required
                             name="first_name"
@@ -275,9 +275,13 @@ const getError = (msg: string): JSX.Element => {
                                 first_name: !ifEmpty(e.target.value),
                               }));
                             }}
-                    />
-                   {dirtyFields["first_name"] && getError("FirstName is requried")}
-                   <TextField
+                          />
+
+                             {dirtyFields["first_name"] && getError("FirstName is requried")}
+
+                      </Grid>
+                      <Grid item xs={6} sm={6}>
+                          <TextField
                             margin="normal"
                             id="last_name"
                             required
@@ -296,7 +300,9 @@ const getError = (msg: string): JSX.Element => {
 
                              {dirtyFields["last_name"] && getError("LastName is requried")}
 
-                             <TextField
+                      </Grid>
+                      <Grid item xs={6} sm={6}>
+                        <TextField
                             margin="normal"
                             required
                             fullWidth
@@ -313,7 +319,12 @@ const getError = (msg: string): JSX.Element => {
                         />
 
                            {dirtyFields["phone"] && getError("Phone is requried")}
-                           <TextField
+
+                      </Grid>
+                      <Grid item xs={6} sm={6}> 
+                      </Grid>
+                      <Grid item xs={6} sm={6}>
+                        <TextField
                               margin="normal"
                               required
                               fullWidth
@@ -331,9 +342,9 @@ const getError = (msg: string): JSX.Element => {
 
                                {dirtyFields["address"] && getError("Address is requried")}
 
-                  </div>
-                  <div>
-                  <TextField
+                      </Grid>
+                      <Grid item xs={6} sm={6}>
+                        <TextField
                               margin="normal"
                               required
                               fullWidth
@@ -351,7 +362,9 @@ const getError = (msg: string): JSX.Element => {
 
                                {dirtyFields["street"] && getError("Street is requried")}
 
-                               <TextField
+                      </Grid>
+                      <Grid item xs={6} sm={6}>
+                        <TextField
                               margin="normal"
                               required
                               fullWidth
@@ -368,7 +381,10 @@ const getError = (msg: string): JSX.Element => {
                             />
 
                                {dirtyFields["city"] && getError("City is requried")}
-                               <TextField
+
+                      </Grid>
+                      <Grid item xs={6} sm={6}>
+                      <TextField
                             margin="normal"
                             required
                             fullWidth
@@ -386,7 +402,9 @@ const getError = (msg: string): JSX.Element => {
 
                              {dirtyFields["postalCode"] && getError("PostalCode is requried")}
 
-                             <TextField
+                      </Grid>
+                      <Grid item xs={6} sm={6}>
+                      <TextField
                             margin="normal"
                             required
                             fullWidth
@@ -404,20 +422,19 @@ const getError = (msg: string): JSX.Element => {
 
                              {dirtyFields["country"] && getError("Country is requried")}
 
-                    <div style={{ marginLeft: '10px' }}>
-                      <Typography
-                        component="h2"
-                        variant="h6"
-                        sx={{ mt: 1 }}
-                        color="primary"
-                        gutterBottom
-                      >
+                        </Grid>
+                        <Grid item xs={6} sm={6}>
+                       </Grid>
+                    </Grid>
+                    <Typography component="h2" variant="h6" sx={{ mt: 1}} color="primary" gutterBottom>
                         Login Information
-                      </Typography>
-                      <Box>Create login information for the user.</Box>
-                    </div>
-                    <div>
-                    <TextField
+                    </Typography>
+                    <Box>
+                      Create login information for the user.
+                    </Box>
+                    <Grid container spacing={2} rowSpacing={1} >
+                      <Grid item xs={6} >
+                      <TextField
                             margin="normal"
                             required
                             fullWidth
@@ -433,25 +450,7 @@ const getError = (msg: string): JSX.Element => {
                             }}
                           />
                              {dirtyFields["email"] && getError("Email is requried")}
-                      <FormControl style={{ marginLeft: '20px' }}>
-                        <FormLabel id="demo-radio-buttons-group-label">
-                          {' '}
-                          Roles/Permission
-                        </FormLabel>
-                        <RadioGroup
-                          aria-labelledby="demo-radio-buttons-group-label"
-                          value={permission}
-                          onChange={radioChange}
-                        >
-                          <FormControlLabel
-                            value="admin"
-                            control={<Radio />}
-                            label="admin"
-                          />
-                        
-                        </RadioGroup>
-                      </FormControl>
-                      <TextField
+                        <TextField
                         margin="normal"
                         required
                         fullWidth
@@ -463,47 +462,50 @@ const getError = (msg: string): JSX.Element => {
                           setPassword(e.target.value);
                         }} 
                       />
-                      <FormControl style={{ marginLeft: '20px' }}>
+                      </Grid>
                      
-                        <RadioGroup
-                          aria-labelledby="demo-radio-buttons-group-label"
-                          defaultValue="female"
-                          name="radio-buttons-group"
-                        >
-                          <FormControlLabel
-                             value="author"
-                            control={<Radio />}
-                            label="author"
-                          />
-                        
-                        </RadioGroup>
-                      </FormControl>
+                      <Grid item xs={6} >
+                          <Typography component="h6" color="primary" variant="h6" sx={{ mt: 2 }}  gutterBottom>
+                            Roles/Permission
+                            </Typography>
+                            <FormControl>
+                                <RadioGroup
+                                    aria-labelledby="demo-controlled-radio-buttons-group"
+                                    name="controlled-radio-buttons-group"
+                                    value={permission}
+                                    onChange={radioChange}
+                                  >
+                                    <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+                                    <FormControlLabel value="author" control={<Radio />} label="Author" />
+                                  </RadioGroup>
+                                </FormControl>
+                      </Grid>
+                      <Grid item xs={6} sm={6}>
+                        {/* <Button variant="contained" component="label" sx={{ mb: 3 }}> */}
+                     
+                        <p>  Upload profile</p>
+                          {/* <input type="file"  name='logo' hidden accept="image/*" multiple  /> */}
+                          <input type="file"   name='file' onChange={handleFileChange}
+                        />
+                    {/* </Button> */}
+                      </Grid>
+                     </Grid>
                     
-                      <div style={{marginLeft:"10px"}}>
-                   <p>  Upload profile</p>
-                 <input type="file" name='file' onChange={handleFileChange}/>
-                </div>
-                    </div>
-                  </div>
-                  <div>
-                  <Toolbar  sx={{ mt: 3 ,pl:"0 !important"}}>
+                   
+                      <Toolbar  sx={{ ml: 0 ,pl:"0 !important", mt:2}}>
                           <Button 
-                             disabled={!isValidData()}
+                           disabled={!isValidData()}
                           type="submit"
                           variant="contained"
                         >
                         Submit
                           </Button>
-                        <Button variant="contained" sx={{ml:2}} component={Link}  to={'/management/profile'}>Cancel </Button>
+                        <Button  variant="contained" component={Link} to="/users" sx={{ ml: 1 }} >Cancel </Button>
                       </Toolbar> 
-                  </div>
-                </Box>
+                      </Box>
               </CardContent>
             </Card>
           </Grid>
-        
-   
-         
         </Grid>
       </Container>
       <Footer />

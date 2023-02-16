@@ -60,6 +60,7 @@ const currencies = [
 ];
 
 function editUsers() {
+  const params = useParams();
   const [currency, setCurrency] = useState('EUR');
   const theme = useTheme();
   const navigate = useNavigate();
@@ -175,12 +176,11 @@ const getError = (msg: string): JSX.Element => {
     </span>
   );
 };
-
+console.log("parmasid", params.id)
 useEffect(() => {
     if(onload==false){
-    //   const userId = window.location.href.split('/')[5]
-    //   console.log("my id", window.location.href);
-      const formData = {id:'3'};  
+      const userId = window.location.href.split('/')[5];
+      const formData = { id: userId };
       store.dispatch(getUser(formData)).then((res: any) => {
           setOnload(true);
           if(res && res.payload){

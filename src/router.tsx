@@ -46,9 +46,7 @@ const Permission = Loader(
 const Countries = Loader(
   lazy(() => import('src/content/applications/Countries'))
 );
-const EditUsers = Loader(
-  lazy(() => import('src/content/applications/UsersLists/Edit'))
-);
+
 const States = Loader(
   lazy(() => import('src/content/applications/States'))
 );
@@ -59,9 +57,6 @@ const Cities = Loader(
 
 
 
-const ViewUsers = Loader(
-  lazy(() => import('src/content/applications/UsersLists/View'))
-);
 const AddCompany = Loader(
   lazy(() => import('src/content/applications/Transactions/Add'))
 );
@@ -140,8 +135,13 @@ const AddUsers = Loader(
   lazy(() => import('src/content/applications/UsersLists/Add'))
 );
 
+const EditUsers = Loader(
+  lazy(() => import('src/content/applications/UsersLists/Edit'))
+);
 
-
+const ViewUsers = Loader(
+  lazy(() => import('src/content/applications/UsersLists/View'))
+);
 // Components
 
 
@@ -333,7 +333,14 @@ const routes: RouteObject[] = [
         path: 'adduser',
         element: <AddUsers/>
       },
-
+      {
+        path: 'adduser',
+        element: <AddUsers/>
+      },
+      {
+        path: 'edituser/:id',
+        element: <EditUsers/>
+      },
       // Permission Coponents
       {
         path: 'add',
