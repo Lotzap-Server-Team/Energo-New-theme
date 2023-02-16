@@ -199,14 +199,14 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell padding="checkbox">
+              {/* <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
                   checked={selectedAllCryptoOrders}
                   indeterminate={selectedSomeCryptoOrders}
                   onChange={handleSelectAllCryptoOrders}
                 />
-              </TableCell>
+              </TableCell> */}
               <TableCell>S.No.</TableCell>
               <TableCell>Title </TableCell>
   
@@ -214,7 +214,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder: any) => {
+            {paginatedCryptoOrders.map((cryptoOrder: any , i : any) => {
               console.log(cryptoOrder, 'cryptoOrdercryptoOrdercryptoOrder');
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
                 cryptoOrder.id
@@ -225,7 +225,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   key={cryptoOrder.id}
                   selected={isCryptoOrderSelected}
                 >
-                  <TableCell padding="checkbox">
+                  {/* <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
                       checked={isCryptoOrderSelected}
@@ -234,7 +234,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       }
                       value={isCryptoOrderSelected}
                     />
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -243,7 +243,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.id}
+                      {i+1}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -271,29 +271,26 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         }}
                         color="inherit"
                         size="small"
+                        component={Link}
+                        to={'/management/editrole/' + cryptoOrder.id}
                       >
-                        <Button
-                          component={Link}
-                          to={'/management/editrole/' + cryptoOrder.id}
-                        >
+                        
                           <EditTwoToneIcon fontSize="small" />
-                        </Button>
+                     
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="View Role" arrow>
                       <IconButton
                         sx={{
                           '&:hover': { background: theme.colors.primary.lighter },
-                          color: theme.palette.error.main
+                          color: theme.palette.primary.main
                         }}
                         color="inherit"
                         size="small"
-                      >
-                        <Button    component={Link}
+                        component={Link}
                           to={'/management/viewrole/' + cryptoOrder.id}
-                          >
+                      >
                         <VisibilityIcon fontSize="small" />
-                        </Button>
                       </IconButton>
                     </Tooltip>
                   </TableCell>
