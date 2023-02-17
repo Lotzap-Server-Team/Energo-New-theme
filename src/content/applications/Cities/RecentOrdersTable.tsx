@@ -1,15 +1,10 @@
 import { FC, ChangeEvent, useState } from 'react';
-import { format } from 'date-fns';
-import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import {
   Tooltip,
   Divider,
   Box,
-  FormControl,
-  InputLabel,
   Card,
-  Checkbox,
   IconButton,
   Table,
   TableBody,
@@ -18,8 +13,6 @@ import {
   TablePagination,
   TableRow,
   TableContainer,
-  Select,
-  MenuItem,
   Typography,
   useTheme,
   CardHeader,
@@ -37,6 +30,7 @@ import { store } from 'src/redux/store';
 import { deleteCity, deletePermission, statusCity } from 'src/redux/store/reducers/slices/UserSlice';
 import { toast } from 'react-toastify';
 import Modal from '@mui/material/Modal';
+import { propsToClassKey } from '@mui/styles';
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -134,6 +128,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
             if(res.payload.status==true){
              toast.success(res.payload.message);
             //  setPermissions([]);
+           
             }else{
                  toast.error(res.payload.message);
             }
@@ -146,6 +141,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           store.dispatch(statusCity(formData)).then((res: any) => {
             if (res.payload.status == true) {
               toast.success(res.payload.message);
+              
               // setCountries([]);
             } else {
               toast.error(res.payload.message);

@@ -64,7 +64,7 @@ function Editpermission() {
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
-    if(isValidData()){
+    // if(isValidData()){
     const formData = {
       state_id:StateID,
       country_id:country_id,
@@ -79,7 +79,7 @@ function Editpermission() {
         toast.error(res.payload?.message);
       }
     });           
-  };
+  // };
   }
 
   function getCountrieData(){

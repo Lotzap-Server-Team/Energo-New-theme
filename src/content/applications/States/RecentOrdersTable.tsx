@@ -144,13 +144,14 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
 
     store.dispatch(deleteState(formData)).then((res: any) => {
       if (res.payload.status == true) {
-        alert('Successfully');
         toast.success(res.payload.message);
         //  setPermissions([]);
+
       } else {
         toast.error(res.payload.message);
       }
     });
+    setOpen(false)
   };
 
   const statusOptions = [

@@ -73,7 +73,7 @@ function getCountryStatesByCountry(e:any){
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
-    if(isValidData()){
+    // if(isValidData()){
     const formData = {
       country_id:country,
       name:name,
@@ -87,7 +87,7 @@ function getCountryStatesByCountry(e:any){
         toast.error(res.payload?.message);
       }
     });           
-  };
+  // };
   }
   useEffect(() => {
     getCountrieData();
