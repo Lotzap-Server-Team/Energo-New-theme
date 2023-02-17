@@ -34,6 +34,7 @@ const Transactions = Loader(
 // const addcompany = Loader(
 //   lazy(() => import('src/content/applications/Transactions/Addcompany'))
 // );
+// users
 const UserLists = Loader(
   lazy(() => import('src/content/applications/UsersLists'))
 );
@@ -55,7 +56,7 @@ const Cities = Loader(
   lazy(() => import('src/content/applications/Cities'))
 );
 
-
+//company
 
 const AddCompany = Loader(
   lazy(() => import('src/content/applications/Transactions/Add'))
@@ -69,7 +70,9 @@ const ViewCompany = Loader(
 const AddCompanyData = Loader(
   lazy(() => import('src/content/applications/Transactions/CompanyFolders'))
 );
-
+const CompanyFoldersView = Loader(
+  lazy(() => import('src/content/applications/Transactions/FoldersView'))
+);
 
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
@@ -409,6 +412,10 @@ const routes: RouteObject[] = [
       {
         path: 'viewcompany/:id',
         element: <ViewCompany/>
+      },
+      {
+        path: 'companyfolders/:id/:folderId',
+        element: <CompanyFoldersView/>
       },
     ]
     

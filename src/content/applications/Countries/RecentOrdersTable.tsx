@@ -257,8 +257,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder: any , i : any) => {
-              console.log(cryptoOrder, 'cryptoOrdercryptoOrdercryptoOrder');
+            {paginatedCryptoOrders.map((cryptoOrder: any, i) => {
+
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
                 cryptoOrder.id
               );

@@ -55,12 +55,13 @@ function companyFolders() {
   const [showFolder, setShowFolder] = useState([]);
   const [title,setTitle] = useState('');
   const [folder, setCompanyFolder] = useState([]);
-
+console.log('my id', params.id);
   function getCpmpanyFolder() {
     const formData = {
       company_id: params.id
     };
     store.dispatch(getCompanyFolder(formData)).then((res: any) => {
+      
       setShowFolder(res.payload.folders);
       console.log(res.payload.folders);
     });
@@ -94,7 +95,7 @@ const handleAdd = (e:any) => {
       toast.success(res.payload.message);
       handleClose()
       getCpmpanyFolder();
-        // navigate(`/companies/document/${params.companyId}`)
+        // navigate(`management/companyfolders/${companyId}`)
     } else {
       toast.error(res.payload.message)
     }
