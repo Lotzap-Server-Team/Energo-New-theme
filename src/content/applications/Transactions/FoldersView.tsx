@@ -52,13 +52,14 @@ export default function companyFoldersView() {
         }
       });
     };
-  
+  console.log("parms id", params)
     const callcompony = ()=>{
       const data = {
-        company_id: params.companyId,
-        folder_id: params.documentId,
+        company_id: params.id,
+        folder_id: params.folderId,
       };
       store.dispatch(getDocuments(data)).then((res: any) => {
+        console.log("res", res);
         if(res.payload.status == true){
           setDocuments(res.payload.folders.media)
           setFolderName(res.payload.folders.title)

@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState } from 'react';
+import { FC, ChangeEvent, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -27,7 +27,11 @@ import BulkActions from './BulkActions';
 import { Navigate, useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { store } from 'src/redux/store';
-import { deleteCity, deletePermission, statusCity } from 'src/redux/store/reducers/slices/UserSlice';
+import {
+  deleteCity,
+  deletePermission,
+  statusCity
+} from 'src/redux/store/reducers/slices/UserSlice';
 import { toast } from 'react-toastify';
 import Modal from '@mui/material/Modal';
 import { propsToClassKey } from '@mui/styles';
@@ -96,6 +100,32 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     status: null
   });
 
+  const [editcity, setEditCity] = useState(false);
+  const [citydelet, setCityDelet] = useState(false);
+
+  var permissions: any = localStorage.getItem('permissions');
+
+  const givepermission = () => {
+    var allpermission = JSON.parse(permissions);
+    if (allpermission.length != 0) {
+      allpermission.forEach((data :any) => {
+        if (data.flag == 'Cities') {
+        console.log(data.name, 'ghhhhhhhghhghghg');
+
+          if (data.name == 'Edit') {
+            setEditCity(true);
+          }
+          if (data.name == 'Delete') {
+            setCityDelet(true);
+          }
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    givepermission();
+  });
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -116,39 +146,36 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     pb: 3
   };
 
-
   const navigate = useNavigate();
   const params = useParams();
 
-  const deletePermissionById=(e:any)=>{
-    const formData ={
-      city_id :e
-    }
-          store.dispatch(deleteCity(formData)).then((res: any) => {
-            if(res.payload.status==true){
-             toast.success(res.payload.message);
-            //  setPermissions([]);
-           
-            }else{
-                 toast.error(res.payload.message);
-            }
-          }); 
-          setOpen(false)
-        }
-        const statusUpdateCountry = (e: any) => {
-          const formData = {
-            city_id: e,
-          };
-          store.dispatch(statusCity(formData)).then((res: any) => {
-            if (res.payload.status == true) {
-              toast.success(res.payload.message);
-              // setCountries([]);
-            } else {
-              toast.error(res.payload.message);
-            }
-          });
-        };
-      
+  const deletePermissionById = (e: any) => {
+    const formData = {
+      city_id: e
+    };
+    store.dispatch(deleteCity(formData)).then((res: any) => {
+      if (res.payload.status == true) {
+        toast.success(res.payload.message);
+        //  setPermissions([]);
+      } else {
+        toast.error(res.payload.message);
+      }
+    });
+    setOpen(false);
+  };
+  const statusUpdateCountry = (e: any) => {
+    const formData = {
+      city_id: e
+    };
+    store.dispatch(statusCity(formData)).then((res: any) => {
+      if (res.payload.status == true) {
+        toast.success(res.payload.message);
+        // setCountries([]);
+      } else {
+        toast.error(res.payload.message);
+      }
+    });
+  };
 
   const statusOptions = [
     {
@@ -242,7 +269,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
         <Table>
           <TableHead>
             <TableRow>
-             
               <TableCell>S.No.</TableCell>
               <TableCell>Country</TableCell>
               <TableCell>State</TableCell>
@@ -253,8 +279,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder: any , i : any) => {
-              console.log(cryptoOrder, 'cryptoOrdercryptoOrdercryptoOrder');
+            {paginatedCryptoOrders.map((cryptoOrder: any, i) => {
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
                 cryptoOrder.id
               );
@@ -264,7 +289,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   key={cryptoOrder.id}
                   selected={isCryptoOrderSelected}
                 >
-               
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -273,7 +297,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {i+1}
+                      {i + 1}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -317,89 +341,109 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                    {cryptoOrder.is_active ==1 ? <Button color="success"  onClick={()=> statusUpdateCountry(cryptoOrder.id)}
-                          > Active </Button> :  <Button color='error'
-                          //  sx={{
-                          // background: theme.colors.error.lighter,}}
-                           onClick={()=> statusUpdateCountry(cryptoOrder.id)} > 
-                           Inactive </Button>}
+                      {cryptoOrder.is_active == 1 ? (
+                        <Button
+                          color="success"
+                          onClick={() => statusUpdateCountry(cryptoOrder.id)}
+                        >
+                          {' '}
+                          Active{' '}
+                        </Button>
+                      ) : (
+                        <Button
+                          color="error"
+                          onClick={() => statusUpdateCountry(cryptoOrder.id)}
+                        >
+                          Inactive{' '}
+                        </Button>
+                      )}
                     </Typography>
                   </TableCell>
 
                   <TableCell align="center">
-                    <Tooltip title="Edit City" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: theme.palette.primary.main
-                        }}
-                        color="inherit"
-                        size="small"
-                        component={Link}
-                        to={'/management/editcity/' + cryptoOrder.id}
-                      >
-                     
-                 
+                    {editcity && (
+                      <Tooltip title="Edit City" arrow>
+                        <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.primary.lighter
+                            },
+                            color: theme.palette.primary.main
+                          }}
+                          color="inherit"
+                          size="small"
+                          component={Link}
+                          to={'/management/editcity/' + cryptoOrder.id}
+                        >
                           <EditTwoToneIcon fontSize="small" />
-               
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete City" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': { background: theme.colors.error.lighter },
-                          color: theme.palette.error.main
-                        }}
-                        color="inherit"
-                        size="small"
-                      onClick={handleOpen}
-                      >
-                
-                        <DeleteTwoToneIcon sx={{ color:"red" }} fontSize="small" />
-                  
-                      </IconButton>
-                    </Tooltip>
+                        </IconButton>
+                      </Tooltip>
+                    )}
+
+                    {citydelet && (
+                      <Tooltip title="Delete City" arrow>
+                        <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.error.lighter
+                            },
+                            color: theme.palette.error.main
+                          }}
+                          color="inherit"
+                          size="small"
+                          onClick={handleOpen}
+                        >
+                          <DeleteTwoToneIcon
+                            sx={{ color: 'red' }}
+                            fontSize="small"
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                   </TableCell>
                   {open && (
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="parent-modal-title"
-            aria-describedby="parent-modal-description"
-          >
-            <Box sx={{ ...style, width: 400 }}>
-              <Typography
-                variant="h4"
-                sx={{ color: 'black', textAlign: 'center' , mt : 3   }}
-              >
-                Are you sure want to delete this ?{' '}
-              </Typography>
-              <Box sx={{ textAlign : 'center' , mt : 3 }} >
-              <Button
-                variant="outlined"
-                sx={{
-                  background: '#3d6df9',
-                  color: 'white',
-                  mx:1
-                }}
-                onClick={handleClose}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                sx={{ mx:1 , background: '#f44336', color: 'white' }}
-                onClick={()=> {deletePermissionById(cryptoOrder.id)}}
-              >
-             
-                yes delete it
-              </Button>
-              </Box>
-            </Box>
-          </Modal>
-        )}
+                    <Modal
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="parent-modal-title"
+                      aria-describedby="parent-modal-description"
+                    >
+                      <Box sx={{ ...style, width: 400 }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ color: 'black', textAlign: 'center', mt: 3 }}
+                        >
+                          Are you sure want to delete this ?{' '}
+                        </Typography>
+                        <Box sx={{ textAlign: 'center', mt: 3 }}>
+                          <Button
+                            variant="outlined"
+                            sx={{
+                              background: '#3d6df9',
+                              color: 'white',
+                              mx: 1
+                            }}
+                            onClick={handleClose}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            variant="contained"
+                            sx={{
+                              mx: 1,
+                              background: '#f44336',
+                              color: 'white'
+                            }}
+                            onClick={() => {
+                              deletePermissionById(cryptoOrder.id);
+                            }}
+                          >
+                            yes delete it
+                          </Button>
+                        </Box>
+                      </Box>
+                    </Modal>
+                  )}
                 </TableRow>
               );
             })}

@@ -55,15 +55,20 @@ function companyFolders() {
   const [showFolder, setShowFolder] = useState([]);
   const [title,setTitle] = useState('');
   const [folder, setCompanyFolder] = useState([]);
-
+console.log('my id', params.id);
   function getCpmpanyFolder() {
     const formData = {
       company_id: params.id
     };
     store.dispatch(getCompanyFolder(formData)).then((res: any) => {
+      
       setShowFolder(res.payload.folders);
       console.log(res.payload.folders);
     });
+  }
+  // navigate(`management/companyfolders/${params.id}/${params.folderId}`)
+  const sharefolderId = (e)=>{
+    navigate(`/management/companyfolders/${params.id}/${e}`)
   }
 
   useEffect(() => {
@@ -94,7 +99,7 @@ const handleAdd = (e:any) => {
       toast.success(res.payload.message);
       handleClose()
       getCpmpanyFolder();
-        // navigate(`/companies/document/${params.companyId}`)
+        // navigate(`management/companyfolders/${companyId}`)
     } else {
       toast.error(res.payload.message)
     }
@@ -109,7 +114,7 @@ const handleAdd = (e:any) => {
         <div>
           <div className="folder" id={i + 'card'}>
             <CardContent sx={{ paddingTop: '6px', pb: '6px !important', marginTop: '35px'}}>
-                  <Typography style={{ cursor: 'pointer' }}>
+                  <Typography style={{ cursor: 'pointer' }} onClick={(e)=>{sharefolderId(card.id)}}>
                     {card.title}
                   </Typography>
                   <Typography sx={{ fontSize: '13px' }}>

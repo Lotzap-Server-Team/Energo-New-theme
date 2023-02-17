@@ -184,7 +184,7 @@ useEffect(() => {
       store.dispatch(getUser(formData)).then((res: any) => {
           setOnload(true);
           if(res && res.payload){
-            console.log("my res", res.payload.users?.first_name);
+            // console.log("my res", res.payload.users?.first_name);
               setId(res.payload.user?.id);
               setCompanyId(res.payload.user?.company_id);
               setEmail(res.payload.user?.email);

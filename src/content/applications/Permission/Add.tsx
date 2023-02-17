@@ -60,7 +60,7 @@ function Addpermission() {
   const [onload, setOnload] = useState(false);
   const [errorMessages, setErrorMessages] = useState('');
   const [permissions, setPermissions] = useState([]);
-
+  const [flag,setFlag] = useState('');
   const [dirtyFields, setDirtyFields] = useState({
     name: false,
     url: false,
@@ -77,11 +77,14 @@ function Addpermission() {
     const validateFields = ifEmpty(name && url && parent);
     return validateFields;
   };
-
   const selectChange = (event: SelectChangeEvent) => {
     setParent(event.target.value);
+    permissions.forEach((res:any)=>{
+      if(res.id == event.target.value){
+        setFlag(res.name)
+      }
+    })
   };
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
       const formData = {
@@ -89,7 +92,7 @@ function Addpermission() {
         url: url,
         parent: parent,
         guard_name: 'web' , 
-          flag : 'flag'
+        flag : flag==''?name:flag
       };
       console.log(formData , "data")
       store.dispatch(createPermission(formData)).then((res: any) => {
