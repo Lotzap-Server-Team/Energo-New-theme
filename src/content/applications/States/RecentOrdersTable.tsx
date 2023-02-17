@@ -1,5 +1,5 @@
-import { FC, ChangeEvent, useState } from 'react';
-
+import { FC, ChangeEvent } from 'react';
+import React , { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -90,6 +90,9 @@ const applyPagination = (
 };
 
 const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
+
+  const [data , setData] = useState(cryptoOrders)
+console.log(data , "dataaa")
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );

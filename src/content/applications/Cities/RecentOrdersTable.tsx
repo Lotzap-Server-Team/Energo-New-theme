@@ -133,6 +133,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                  toast.error(res.payload.message);
             }
           }); 
+          setOpen(false)
         }
         const statusUpdateCountry = (e: any) => {
           const formData = {
@@ -141,7 +142,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           store.dispatch(statusCity(formData)).then((res: any) => {
             if (res.payload.status == true) {
               toast.success(res.payload.message);
-              
               // setCountries([]);
             } else {
               toast.error(res.payload.message);

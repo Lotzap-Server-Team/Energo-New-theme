@@ -24,7 +24,7 @@ import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import FormControl from '@mui/material/FormControl';
 import {
-    updatePermission , getPermissionParent , getPermission, updateState, getCountries, getState
+ updateState, getCountries, getState
 } from 'src/redux/store/reducers/slices/UserSlice';
 import { store } from 'src/redux/store';
 
@@ -38,7 +38,6 @@ function Editpermission() {
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
-  const [parent, setParent] = useState('');
   const [errorMessages, setErrorMessages] = useState('');
   const [countries, setCountries] = useState([]);
   const [country_id,setCountry] = useState('');
@@ -59,28 +58,13 @@ function Editpermission() {
     const validateFields = ifEmpty(name && country_id);
     return validateFields;
   };
-
-
-
-  const handleSubmit = (e:any) => {
-    e.preventDefault();
-    // if(isValidData()){
-    const formData = {
-      state_id:StateID,
-      country_id:country_id,
-      name:name,
-    }
-    // console.log(formData,'formData')
-    store.dispatch(updateState(formData)).then((res: any) => {
-      if (res.payload.status == true) {
-        toast.success(res.payload.message)
-        navigate("management/states");
-      } else {
-        toast.error(res.payload?.message);
-      }
-    });           
-  // };
-  }
+  const selectCuntry = (event: SelectChangeEvent) => {
+    setCountry(event.target.value);
+    getCountryStatesByCountry(event.target.value);
+  };
+const selectState = (event:SelectChangeEvent) => {
+    setName(event.target.value);
+  };
 
   function getCountrieData(){
     if(countries.length == 0){
@@ -90,6 +74,32 @@ function Editpermission() {
       });
     }
   }
+
+  function getCountryStatesByCountry(e:any){
+    const formDate={
+        country_id:e
+    }
+  }
+
+
+  const handleSubmit = (e:any) => {
+    e.preventDefault();
+    const formData = {
+      state_id:StateID,
+      country_id:country_id,
+      name:name,
+    }
+    store.dispatch(updateState(formData)).then((res: any) => {
+      if (res.payload.status == true) {
+        toast.success(res.payload.message)
+        navigate("management/states");
+      } else {
+        toast.error(res.payload?.message);
+      }
+    });           
+  }
+
+  
  
   console.log(window.location.href.split('/')[5])
    
@@ -160,7 +170,7 @@ function Editpermission() {
                           id="parent"
                           value={country_id}
                           label="Parent Category"
-                          onChange={(e)=> setCountry(e.target.value)}
+                          onChange={ selectCuntry }
                         >
                           <MenuItem value="">-Select-</MenuItem>
                           {countries.map((opt: any) => (

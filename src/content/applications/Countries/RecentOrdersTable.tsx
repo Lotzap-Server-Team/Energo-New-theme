@@ -138,6 +138,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
             toast.error(res.payload.message);
           }
         });
+        setOpen(false)
       }
   
 
@@ -149,8 +150,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     store.dispatch(StatusCountry(formData)).then((res: any) => {
       if (res.payload.status == true) {
         toast.success(res.payload.message);
-        // alert("Successfully") 
-        // setCountries([]);
+       
       } else {
         toast.error(res.payload.message);
       }
@@ -370,7 +370,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
               <Button
                 variant="contained"
                 sx={{ mx:1 , background: '#f44336', color: 'white' }}
-                  onClick={()=> { deleteCountry(cryptoOrder.id)}}
+                  onClick={()=> { deletecountry(cryptoOrder.id)}}
               >
              
                 yes delete it
