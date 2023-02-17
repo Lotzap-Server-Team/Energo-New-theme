@@ -66,6 +66,10 @@ console.log('my id', params.id);
       console.log(res.payload.folders);
     });
   }
+  // navigate(`management/companyfolders/${params.id}/${params.folderId}`)
+  const sharefolderId = (e)=>{
+    navigate(`/management/companyfolders/${params.id}/${e}`)
+  }
 
   useEffect(() => {
     getCpmpanyFolder();
@@ -110,7 +114,7 @@ const handleAdd = (e:any) => {
         <div>
           <div className="folder" id={i + 'card'}>
             <CardContent sx={{ paddingTop: '6px', pb: '6px !important', marginTop: '35px'}}>
-                  <Typography style={{ cursor: 'pointer' }}>
+                  <Typography style={{ cursor: 'pointer' }} onClick={(e)=>{sharefolderId(card.id)}}>
                     {card.title}
                   </Typography>
                   <Typography sx={{ fontSize: '13px' }}>
