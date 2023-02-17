@@ -95,11 +95,8 @@ export default function companyFoldersView() {
       <Helmet>
         <title>Add Company</title>
       </Helmet>
-      <PageTitleWrapper>
-        <h1>Add Company</h1>
-        <p>Create your company here add start your business.</p>
-      </PageTitleWrapper>
-      <Container maxWidth="lg">
+
+      <Container maxWidth="lg" sx={{mt:4}}>
         <Grid
           container
           direction="row"
@@ -109,7 +106,7 @@ export default function companyFoldersView() {
         >
           <Grid item xs={12} >
             <Card>
-              <CardHeader title="Add Company" />
+              <CardHeader title="Document View / Test" />
               <Divider />
               <CardContent>
               <Box
@@ -150,11 +147,12 @@ export default function companyFoldersView() {
                       variant="contained"
                       // component={Link}
                       // to="/companies/document/"
-                      sx={{ ml: 1 }}
+                      sx={{ ml: 1, mt:2 }}
                       onClick={back}
                     >
                       Back{" "}
                     </Button>
+                    
                   </Toolbar>
               </CardContent>
             </Card>

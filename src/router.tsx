@@ -73,6 +73,9 @@ const AddCompanyData = Loader(
 const CompanyFoldersView = Loader(
   lazy(() => import('src/content/applications/Transactions/FoldersView'))
 );
+const DocumentView = Loader(
+  lazy(() => import('src/content/applications/Transactions/DocumentShare'))
+);
 
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
@@ -378,6 +381,10 @@ const routes: RouteObject[] = [
         {
           path: 'addstate',
           element: <AddStates />
+        },
+        {
+          path:'documentview',
+          element:<DocumentView/>
         },
         {
           path: 'editstate/:id',
