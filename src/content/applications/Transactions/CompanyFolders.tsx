@@ -24,7 +24,7 @@ import {
   getCompanyFolder,
   uploadeImage
 } from 'src/redux/store/reducers/slices/UserSlice';
-import { useEffect, useRef, useState } from 'react';
+import { createContext, useEffect, useRef, useState } from 'react';
 import { store } from 'src/redux/store';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
@@ -41,8 +41,10 @@ import { TransitionProps } from '@mui/material/transitions';
 import React from 'react';
 import { toast } from 'react-toastify';
 import FormControlLabel from '@mui/material/FormControlLabel';
+
+
 type data={
-  documents:any
+datatable:Function ;
 }
 
 
@@ -77,7 +79,9 @@ function companyFolders(props:data) {
   const [folderId, setFolderId] = useState('');
   const [openFolder, setFolder] = React.useState(false);
   const [disabled, setDisabled] = useState(false);
-  console.log('my id', params.id);
+  const [open, setOpen] = React.useState(false);
+  
+  // console.log('my id', params.id);
   var foldersData: any = [];
   var newArray:any =[]  
   function getCpmpanyFolder() {
@@ -85,15 +89,21 @@ function companyFolders(props:data) {
     const formData = {
       company_id: params.id
     };
+    console.log('params id', params.id)
     store.dispatch(getCompanyFolder(formData)).then((res: any) => {
       setShowFolder(res.payload.folders);
-      console.log(res.payload.folders);
     });
   }
   function sendMessage(){
-    props.documents(foldersData)
-    navigate("/companies/document/share/"+params.companyId)
+  // (foldersData)
+  // localStorage.setItem('data',foldersData);
+navigate("/management/DocumentShare/"+params.id)
+localStorage.setItem("ourarraykey",JSON.stringify(foldersData));
+
+// console.log("my props", (foldersData))
   }
+
+
   function viewDocument(id:any){
     navigate(`/companies/document/view/${id}/${params.companyId}`)
   }
@@ -142,7 +152,7 @@ function companyFolders(props:data) {
   useEffect(() => {
     getCpmpanyFolder();
   }, []);
-  const [open, setOpen] = React.useState(false);
+ 
   const handleClickOpen = () => {
     setOpen(true);
   };
