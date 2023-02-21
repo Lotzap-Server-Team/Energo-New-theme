@@ -1,5 +1,5 @@
-import { FC, ChangeEvent, useState } from 'react';
-
+import { FC, ChangeEvent, useEffect } from 'react';
+import React , { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -90,6 +90,9 @@ const applyPagination = (
 };
 
 const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
+
+  const [data , setData] = useState(cryptoOrders)
+// console.log(data , "dataaa")
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -99,6 +102,33 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
+
+  const [editstate, setEditState] = useState(false);
+  const [statedelet, setStateDelet] = useState(false);
+
+  var permissions: any = localStorage.getItem('permissions');
+
+  const givepermission = () => {
+    var allpermission = JSON.parse(permissions);
+    if (allpermission.length != 0) {
+      allpermission.forEach((data :any) => {
+        if (data.flag == 'States') {
+          console.log(data.name , "name")
+          if (data.name == 'Edit') {
+            setEditState(true);
+          }
+          if (data.name == 'Delete') {
+            setStateDelet(true);
+          }
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    givepermission();
+  });
+
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -144,13 +174,14 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
 
     store.dispatch(deleteState(formData)).then((res: any) => {
       if (res.payload.status == true) {
-        alert('Successfully');
         toast.success(res.payload.message);
         //  setPermissions([]);
+
       } else {
         toast.error(res.payload.message);
       }
     });
+    setOpen(false)
   };
 
   const statusOptions = [
@@ -254,7 +285,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           </TableHead>
           <TableBody>
             {paginatedCryptoOrders.map((cryptoOrder: any, i: any) => {
-              console.log(cryptoOrder, 'cryptoOrder777777777777777');
+              // console.log(cryptoOrder, 'cryptoOrder777777777777777');
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
                 cryptoOrder.id
               );
@@ -316,8 +347,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       ) : (
                         <Button
                           color="error"
-                          //  sx={{
-                          // background: theme.colors.error.lighter,}}
+                
                           onClick={() => statusUpdateCountry(cryptoOrder.id)}
                         >
                           Inactive{' '}
@@ -327,7 +357,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   </TableCell>
 
                   <TableCell align="center">
-                    <Tooltip title="Edit State" arrow>
+
+                  {
+                     editstate &&  
+                     <Tooltip title="Edit State" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -343,20 +376,27 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Delete State" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': { background: theme.colors.error.lighter },
-                          color: theme.palette.error.main
-                        }}
-                        color="inherit"
-                        size="small"
-                      
-                        onClick={handleOpen}
-                      >
-                        <DeleteTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
+                  }
+                     
+                      {
+                        statedelet && 
+                        <Tooltip title="Delete State" arrow>
+                        <IconButton
+                          sx={{
+                            '&:hover': { background: theme.colors.error.lighter },
+                            color: theme.palette.error.main
+                          }}
+                          color="inherit"
+                          size="small"
+                        
+                          onClick={handleOpen}
+                        >
+                          <DeleteTwoToneIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                      } 
+                    
+               
                   </TableCell>
                   {open && (
           <Modal

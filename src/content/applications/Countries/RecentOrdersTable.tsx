@@ -1,6 +1,5 @@
-import { FC, ChangeEvent, useState } from 'react';
-import { format } from 'date-fns';
-import numeral from 'numeral';
+import { FC, ChangeEvent, useState, useEffect } from 'react';
+
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -31,13 +30,14 @@ import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
-import { Navigate, useNavigate, useParams } from 'react-router';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { store } from 'src/redux/store';
 import { deleteCountry, StatusCountry } from 'src/redux/store/reducers/slices/UserSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Modal from '@mui/material/Modal';
+import useId from '@mui/material/utils/useId';
 
 
 interface RecentOrdersTableProps {
@@ -94,6 +94,36 @@ const applyPagination = (
 };
 
 const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
+
+
+
+  const[editcountry , setEditCountry] = useState(false)
+  const[countrydelet , setCountryDelet] = useState(false)
+
+  var permissions:any  = localStorage.getItem('permissions')
+
+  const givepermission = ()=>{
+    var allpermission = JSON.parse(permissions)
+   if(allpermission.length != 0){
+    allpermission.forEach((data) => {
+      if(data.flag=='Countries'){
+        // console.log(data.name , "flag")
+        if(data.name == 'Edit'){
+          setEditCountry(true)
+        }
+        if(data.name == 'Delete'){
+          setCountryDelet(true)
+        }
+      }
+    });
+  }
+  }
+
+  useEffect(()=>{
+    givepermission()
+  })
+
+
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -133,11 +163,11 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
         store.dispatch(deleteCountry(formdata)).then((res: any) => {
           if (res.payload.status == true) {
             toast.success(res.payload.message);
-     
           } else {
             toast.error(res.payload.message);
           }
         });
+        setOpen(false)
       }
   
 
@@ -149,8 +179,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     store.dispatch(StatusCountry(formData)).then((res: any) => {
       if (res.payload.status == true) {
         toast.success(res.payload.message);
-        // alert("Successfully") 
-        // setCountries([]);
+          
       } else {
         toast.error(res.payload.message);
       }
@@ -310,8 +339,11 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
               
 
                   <TableCell align="center">
-                    <Tooltip title="Edit Countries" arrow>
-                      <IconButton
+                   
+                      {
+                        editcountry  && 
+                        <Tooltip title="Edit Countries" arrow>
+                        <IconButton
                         sx={{
                           '&:hover': {
                             background: theme.colors.primary.lighter
@@ -327,8 +359,13 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                           <EditTwoToneIcon fontSize="small" />
                       
                       </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete Countries" arrow>
+                      </Tooltip>
+                      }
+                   
+               
+                    {
+                      countrydelet && 
+                      <Tooltip title="Delete Countries" arrow>
                       <IconButton
                         sx={{
                           '&:hover': { background: theme.colors.error.lighter },
@@ -340,6 +377,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         <DeleteTwoToneIcon sx={{ color:"red" }}  fontSize="small"  />
                       </IconButton>
                     </Tooltip>
+                     }
+                   
                   </TableCell>
                   {open && (
           <Modal
@@ -370,7 +409,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
               <Button
                 variant="contained"
                 sx={{ mx:1 , background: '#f44336', color: 'white' }}
-                  onClick={()=> { deleteCountry(cryptoOrder.id)}}
+                  onClick={()=> { deletecountry(cryptoOrder.id)}}
               >
              
                 yes delete it

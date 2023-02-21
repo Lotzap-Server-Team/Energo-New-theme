@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import {
   ListSubheader,
@@ -36,7 +36,10 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
+import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
 
+// import { useSelector } from 'react-redux';
+ 
 
 
 const MenuWrapper = styled(Box)(
@@ -184,6 +187,92 @@ const SubMenuWrapper = styled(Box)(
 function SidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
 
+  const [open, setOpen] = useState(true);
+  // const currentUser: any = useSelector((state: any) => state.user.currUser);
+  const user_id = localStorage.getItem('user_id')
+  const [companyIndex, setCompanyIndex] = useState(false);
+  const [indexUsers, setIndexUsers] = useState(false);
+  const [indexNotifications, setindexNotifications] = useState(false);
+  const [indexSecurityManagment, setIndexSecurityManagment] = useState(false);
+  const [indexSctivityLogs, setIndexSctivityLogs] = useState(false);
+  const [indexRoles, setIndexRoles] = useState(true);
+  const [indexPermissions, setIndexPermissions] = useState(true);
+  const [indexCountries, setIndexCountries] = useState(false);
+  const [indexStates, setIndexStates] = useState(false);
+  const [indexCities, setIndexCities] = useState(false);
+  const [indexDashboard, setIndexDashboard] = useState(false);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
+
+  const capitalizeFirstLetter  = (val: any)=>{
+    return   val.charAt(0).toUpperCase() + val.slice(1)
+
+  }
+
+  function addPermission(){
+        var permissions:any = localStorage.getItem('permissions')
+        // console.log(permissions , "permisiionsss")
+        var allPermission:any =JSON.parse(permissions)?JSON.parse(permissions):[];
+        // console.log(allPermission ,' allpermission')
+        if(allPermission.length != 0){
+        allPermission.forEach((per:any) => {
+          // console.log( per , "8888888888888888888");
+          if(capitalizeFirstLetter(per.flag) == "Companies"){
+            // console.log(per.name)
+            if(per.name == "Index"){
+              setCompanyIndex(true)
+            }
+          }
+          if(capitalizeFirstLetter(per.flag) == "Users"){
+            if(per.name == "Index"){
+              setIndexUsers(true)
+            }
+          }
+          if(capitalizeFirstLetter(per.flag) == "Countries"){
+            if(per.name == "Index"){
+              setIndexCountries(true)
+            }
+          }
+          if(capitalizeFirstLetter(per.flag) == "States"){
+            if(per.name == "Index"){
+              setIndexStates(true)
+            }
+          }
+          if(capitalizeFirstLetter(per.flag) == "Cities"){
+            if(per.name == "Index"){
+              setIndexCities(true)
+            }
+          }
+          if(capitalizeFirstLetter(per.flag) == "Notifications"){
+            if(per.name == "Index"){
+              setindexNotifications(true)
+            }
+          }
+          if(capitalizeFirstLetter(per.flag) == "Dashboard"){
+            if(per.name == "Index"){
+              setIndexDashboard(true)
+            }
+          }
+          if(capitalizeFirstLetter(per.flag) == "Activity Logs"){
+            if(per.name == "Index"){
+              setIndexSctivityLogs(true)
+            }
+          }
+          if(capitalizeFirstLetter(per.flag) == "Security Managment"){
+            if(per.name == "Index"){
+              setIndexSecurityManagment(true)
+            }
+          }
+        });
+      }
+  }
+  
+  useEffect(()=>{
+      addPermission();
+  },[])
+
+
   return (
     <>
       <MenuWrapper>
@@ -241,36 +330,67 @@ function SidebarMenu() {
         </List> */}
         <List
           component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Dashboard
-            </ListSubheader>
-          }
+          // subheader={
+          //   <ListSubheader component="div" disableSticky>
+          //     Dashboard
+          //   </ListSubheader>
+          // }
         >
           <SubMenuWrapper>
             <List component="div">
+
+
+            {
+                indexDashboard  && 
+                  <ListItem component="div">
+
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to="/dashboards/crypto"
+                    startIcon={<DashboardCustomizeIcon />}
+                  >
+                    Dashboard 
+                  </Button>
+                </ListItem>
+                
+              }
+
+              {
+                companyIndex && 
+                  <ListItem component="div">
+
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to="/management/transactions"
+                    startIcon={<TableChartTwoToneIcon />}
+                  >
+                    Companies 
+                  </Button>
+                </ListItem>
+                
+              }
+            {
+              indexUsers && 
               <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/management/transactions"
-                  startIcon={<TableChartTwoToneIcon />}
-                >
-                  Companies List
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/management/profile"
-                  startIcon={<AccountCircleTwoToneIcon />}
-                >
-                  User List
-                </Button>
-              </ListItem>
+              <Button
+                disableRipple
+                component={RouterLink}
+                onClick={closeSidebar}
+                to="/management/profile"
+                startIcon={<AccountCircleTwoToneIcon />}
+              >
+                User 
+              </Button>
+            </ListItem>
+            }
+             
+            {
+              indexNotifications && 
+
               <ListItem component="div">
                 <Button
                   disableRipple
@@ -282,6 +402,10 @@ function SidebarMenu() {
                   Notification 
                 </Button>
               </ListItem>
+            } 
+{/* 
+            {
+              indexSecurityManagment &&  */}
               <ListItem component="div">
                 <Button
                   disableRipple
@@ -293,6 +417,10 @@ function SidebarMenu() {
                   Security Management
                 </Button>
               </ListItem>
+            {/* } */}
+  {
+             indexSctivityLogs && 
+              
               <ListItem component="div">
                 <Button
                   disableRipple
@@ -303,8 +431,11 @@ function SidebarMenu() {
                 >
                   Activity Logs
                 </Button>
-              </ListItem>
-              <ListItem component="div">
+              </ListItem> }
+
+              {
+                indexRoles &&  
+                <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -315,7 +446,11 @@ function SidebarMenu() {
                   Roles 
                 </Button>
               </ListItem>
-              <ListItem component="div">
+             } 
+
+              {
+                indexPermissions && 
+                <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -323,42 +458,56 @@ function SidebarMenu() {
                   to="/management/permissions"
                   startIcon={<SettingsIcon />}
                 >
-                  Permission List 
+                  Permission 
                 </Button>
               </ListItem>
+              }
+            
+            { 
+              indexCountries &&  
               <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/management/countries"
-                  startIcon={<PublicIcon />}
-                >
-                  Countries List 
-                </Button>
-              </ListItem>
+              <Button
+                disableRipple
+                component={RouterLink}
+                onClick={closeSidebar}
+                to="/management/countries"
+                startIcon={<PublicIcon />}
+              >
+                Countries 
+              </Button>
+            </ListItem>
+            }
+           
+            {
+              indexStates &&  
               <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/management/states"
-                  startIcon={<PublicIcon />}
-                >
-                  States List 
-                </Button>
-              </ListItem>
+              <Button
+                disableRipple
+                component={RouterLink}
+                onClick={closeSidebar}
+                to="/management/states"
+                startIcon={<PublicIcon />}
+              >
+                States  
+              </Button>
+            </ListItem>
+            }
+             {
+              indexCities &&  
               <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/management/cities"
-                  startIcon={<PublicIcon />}
-                >
-                  Cities List 
-                </Button>
-              </ListItem>
+              <Button
+                disableRipple
+                component={RouterLink}
+                onClick={closeSidebar}
+                to="/management/cities"
+                startIcon={<PublicIcon />}
+              >
+                Cities  
+              </Button>
+            </ListItem>
+             }
+              
+           
             </List>
           </SubMenuWrapper>
         </List>
