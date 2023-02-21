@@ -6,17 +6,30 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
+import React from 'react';
 
 
-const Loader = (Component) => (props) =>
+
+
+const Loader = (Component:any) => (props:any) =>
   (
     <Suspense fallback={<SuspenseLoader />}>
       <Component {...props} />
     </Suspense>
   );
 
-// Pages
+  // const [documenets,setDocuments] = React.useState([]);
 
+  function shareDataF(data:any){
+    console.log(data)
+   }
+
+
+
+// Pages
+// function shareDataF(data:any){
+//   setDocuments(data)
+// }
 const Overview = Loader(lazy(() => import('src/content/overview')));
 
 // Dashboards
@@ -72,6 +85,9 @@ const AddCompanyData = Loader(
 );
 const CompanyFoldersView = Loader(
   lazy(() => import('src/content/applications/Transactions/FoldersView'))
+);
+const DocumentShare = Loader(
+  lazy(() => import('src/content/applications/Transactions/DocumentShare'))
 );
 
 const UserProfile = Loader(
@@ -187,6 +203,8 @@ const StatusMaintenance = Loader(
 );
 
 const routes: RouteObject[] = [
+
+  
   {
     path: '',
     element: <BaseLayout />,
@@ -415,7 +433,15 @@ const routes: RouteObject[] = [
       },
       {
         path: 'companyfolders/:id/:folderId',
-        element: <CompanyFoldersView/>
+        element: <CompanyFoldersView 
+        datatable = {shareDataF}
+        />  
+      },
+      {
+        path: 'documentShare/:id',
+        element: <DocumentShare 
+        // shareData={documenets}
+        />
       },
     ]
     
