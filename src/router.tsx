@@ -80,9 +80,9 @@ const EditCompany = Loader(
 const ViewCompany = Loader(
   lazy(() => import('src/content/applications/Transactions/View'))
 );
-// const AddCompanyData = Loader(
-//   lazy(() => import('src/content/applications/Transactions/CompanyFolders'))
-// );
+const AddCompanyData = Loader(
+  lazy(() => import('src/content/applications/Transactions/CompanyFolders'))
+);
 const CompanyFoldersView = Loader(
   lazy(() => import('src/content/applications/Transactions/FoldersView'))
 );
@@ -379,10 +379,10 @@ const routes: RouteObject[] = [
         path: 'editcountry/:id',
         element: <EditCountries />
       },
-      // {
-      //   path: 'show-company-folders/:id',
-      //   element: <AddCompanyData />
-      // },
+      {
+        path: 'show-company-folders/:id',
+        element: <AddCompanyData />
+      },
       
 
         {
