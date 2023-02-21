@@ -37,8 +37,10 @@ import { Link } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
-
-
+import Modal from '@mui/material/Modal';
+import { store } from 'src/redux/store';
+import { deleteCompany } from 'src/redux/store/reducers/slices/UserSlice';
+import { toast } from 'react-toastify';
 interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
@@ -47,7 +49,6 @@ interface RecentOrdersTableProps {
 interface Filters {
   status?: CryptoOrderStatus;
 }
-
 const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
   const map = {
     failed: {
@@ -103,7 +104,41 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     status: null
   });
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    pt: 2,
+    pb: 3
+  };
+  const deleteCompanyById=(e:any)=>{
+           store.dispatch(deleteCompany(e)).then((res: any) => {
+            if(res.payload.status==true){
+              // setPermissions((prevRows : any) => {
+              //   const rowToDeleteIndex = randomInt(0, prevRows.length - 1);
+              //   return [
+              //     ...permissions.slice(0, rowToDeleteIndex),
+              //     ...permissions.slice(rowToDeleteIndex + 1),
+              //   ];
+              // });
+             toast.success(res.payload.message);
+            //  setPermissions([]);
+            }else{
+                 toast.error(res.payload.message);
+            }
+          }); 
+        }
   const statusOptions = [
     {
       id: 'all',
@@ -353,6 +388,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         }}
                         color="inherit"
                         size="small"
+                        onClick= { handleOpen }
                       >
                         <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>
@@ -372,6 +408,44 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       </IconButton>
                     </Tooltip>
                   </TableCell>
+                  {open && (
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="parent-modal-title"
+            aria-describedby="parent-modal-description"
+          >
+            <Box sx={{ ...style, width: 400 }}>
+              <Typography
+                variant="h4"
+                sx={{ color: 'black', textAlign: 'center' , mt : 3   }}
+              >
+                Are you sure want to delete this ?{' '}
+              </Typography>
+              <Box sx={{ textAlign : 'center' , mt : 3 }} >
+              <Button
+                variant="outlined"
+                sx={{
+                  background: '#3d6df9',
+                  color: 'white',
+                  mx:1
+                }}
+                onClick={handleClose}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ mx:1 , background: '#f44336', color: 'white' }}
+                onClick={()=> {deleteCompanyById(cryptoOrder.id)}}
+              >
+             
+                yes delete it
+              </Button>
+              </Box>
+            </Box>
+          </Modal>
+        )}
                 </TableRow>
               );
             })}

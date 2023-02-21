@@ -250,7 +250,7 @@ function viewUsers() {
                           <Button
                             variant="contained"
                             component={Link}
-                            to="/management/profilew"
+                            to="/management/profile"
                             sx={{ ml: 1, mt:3 }}
                           >
                             Cancel{' '}

@@ -2,6 +2,7 @@ import { FC, ChangeEvent, useState } from 'react';
 import { format } from 'date-fns';
 import numeral from 'numeral';
 import PropTypes from 'prop-types';
+import Modal from '@mui/material/Modal';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   Tooltip,
@@ -34,10 +35,13 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import BulkActions from './BulkActions';
 import {
+  deleteCompany,
+  deleteUser,
   getUsers,
   statusUpdate
 } from 'src/redux/store/reducers/slices/UserSlice';
 import { store } from 'src/redux/store';
+import { toast } from 'react-toastify';
 interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
@@ -104,7 +108,41 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   });
 
   const params = useParams();
+  const [open, setOpen] = useState(false);
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    pt: 2,
+    pb: 3
+  };
+  const deleteUserById=(e:any)=>{
+    store.dispatch(deleteUser(e)).then((res: any) => {
+     if(res.payload.status==true){
+       // setPermissions((prevRows : any) => {
+       //   const rowToDeleteIndex = randomInt(0, prevRows.length - 1);
+       //   return [
+       //     ...permissions.slice(0, rowToDeleteIndex),
+       //     ...permissions.slice(rowToDeleteIndex + 1),
+       //   ];
+       // });
+      toast.success(res.payload.message);
+     //  setPermissions([]);
+     }else{
+          toast.error(res.payload.message);
+     }
+   }); 
+ }
   const statusOptions = [
     {
       id: 'all',
@@ -148,11 +186,11 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     };
     store.dispatch(statusUpdate(formData)).then((res: any) => {
       if (res.payload.status == true) {
-        console.log('res', res);
+        toast.success(res.payload.message);
         userList();
         window.location.reload()
      } else {
-        console.log('this is error');
+      toast.error(res.payload.message);
       }
     });
   };
@@ -341,6 +379,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
+           
                     {/* <Tooltip title="Edit Company" arrow>
                       <IconButton
                         sx={{
@@ -405,11 +444,50 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         }}
                         color="inherit"
                         size="small"
+                        onClick= { handleOpen }
                       >
                         <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
+                  {open && (
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="parent-modal-title"
+            aria-describedby="parent-modal-description"
+          >
+            <Box sx={{ ...style, width: 400 }}>
+              <Typography
+                variant="h4"
+                sx={{ color: 'black', textAlign: 'center' , mt : 3   }}
+              >
+                Are you sure want to delete this ?{' '}
+              </Typography>
+              <Box sx={{ textAlign : 'center' , mt : 3 }} >
+              <Button
+                variant="outlined"
+                sx={{
+                  background: '#3d6df9',
+                  color: 'white',
+                  mx:1
+                }}
+                onClick={handleClose}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ mx:1 , background: '#f44336', color: 'white' }}
+                onClick={()=> {deleteUserById(cryptoOrder.id)}}
+              >
+             
+                yes delete it
+              </Button>
+              </Box>
+            </Box>
+          </Modal>
+        )}
                 </TableRow>
               );
             })}
