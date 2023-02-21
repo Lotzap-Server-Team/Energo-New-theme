@@ -197,14 +197,8 @@ const getError = (msg: string): JSX.Element => {
       <Helmet>
         <title>Forms - Components</title>
       </Helmet>
-      <PageTitleWrapper>
-        <PageTitle
-          heading="Forms"
-          subHeading="Components that are used to build interactive placeholders used for data collection from users."
-          docs="https://material-ui.com/components/text-fields/"
-        />
-      </PageTitleWrapper>
-      <Container maxWidth="lg">
+     
+      <Container maxWidth="lg" sx={{mt:4}}>
         <Grid
           container
           direction="row"
@@ -214,7 +208,7 @@ const getError = (msg: string): JSX.Element => {
         >
           <Grid item xs={12} >
             <Card>
-              <CardHeader title="Add Company" />
+              <CardHeader title="Add User" />
               <Divider />
               <CardContent>
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
