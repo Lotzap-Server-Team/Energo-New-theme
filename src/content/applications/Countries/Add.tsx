@@ -1,14 +1,8 @@
 import { Helmet } from 'react-helmet-async';
-
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import {
-
-  useTheme
-} from '@mui/material/styles';
-
+import {useTheme} from '@mui/material/styles';
 import {
   Container,
   Grid,
@@ -24,30 +18,34 @@ import Footer from 'src/components/Footer';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
-
 import FormControl from '@mui/material/FormControl';
-
-
-
-
 import {
   createCountry,
-  createPermission,
-  getPermissionParent
 } from 'src/redux/store/reducers/slices/UserSlice';
 import { store } from 'src/redux/store';
-
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-function Addcountry() {
+type data = {
+  mydata : any;
+}
+
+
+function Addcountry(props:data) {
   const theme = useTheme();
   const navigate = useNavigate();
   const [name, setName] = useState('');
+  var number:any = 'my Props data ';
+  function viewdata(){
+    props.mydata(number)
+  }
+  useEffect(()=>{
+ viewdata() 
+console.log(props.mydata,'govind')
+  },[])
+
 
   const [errorMessages, setErrorMessages] = useState('');
 
@@ -123,7 +121,7 @@ function Addcountry() {
                   autoComplete="off"
                 >
                   <Grid container spacing={2} rowSpacing={1}>
-                    <Grid item xs={6} sm={6} mt={2}>
+                    <Grid item xs={6} sm={6} >
                       
                       <Grid item xs={12} sm={6} sx={{ my: 1 }}>
                         <TextField

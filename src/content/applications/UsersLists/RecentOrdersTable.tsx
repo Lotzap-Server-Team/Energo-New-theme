@@ -50,7 +50,11 @@ interface RecentOrdersTableProps {
 interface Filters {
   status?: CryptoOrderStatus;
 }
-
+interface RecentOrdersTableProps {
+  className?: string;
+  cryptoOrders: CryptoOrder[];
+  onActivestatus : any ;
+}
 const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
   const map = {
     failed: {
@@ -95,7 +99,7 @@ const applyPagination = (
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
+const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders, onActivestatus }) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -186,8 +190,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     store.dispatch(statusUpdate(formData)).then((res: any) => {
       if (res.payload.status == true) {
         toast.success(res.payload.message);
-        userList();
-        window.location.reload();
+        onActivestatus()
       } else {
         toast.error(res.payload.message);
       }

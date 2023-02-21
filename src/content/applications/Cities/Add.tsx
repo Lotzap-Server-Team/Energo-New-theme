@@ -86,7 +86,7 @@ function getCountryStatesByCountry(e:any){
       } else {
         toast.error(res.payload?.message);
       }
-    });           
+    });          
   // };
   }
   useEffect(() => {
@@ -133,7 +133,7 @@ function getCountryStatesByCountry(e:any){
                   autoComplete="off"
                 >
                   <Grid container spacing={2} rowSpacing={1}>
-                    <Grid item xs={6} sm={6} mt={2}>
+                    <Grid item xs={6} sm={6} >
                       <FormControl fullWidth sx={{ my: 1 }} >
                         <InputLabel id="parent">Countries</InputLabel>
                         <Select

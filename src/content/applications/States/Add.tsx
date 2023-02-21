@@ -133,7 +133,7 @@ function Addpermission() {
                   autoComplete="off"
                 >
                   <Grid container spacing={2} rowSpacing={1}>
-                    <Grid item xs={6} sm={6} mt={2}>
+                    <Grid item xs={6} sm={6}>
                       <FormControl fullWidth>
                         <InputLabel id="parent">Countries</InputLabel>
                         <Select

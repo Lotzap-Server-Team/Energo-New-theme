@@ -15,6 +15,7 @@ import NotificationsActiveTwoToneIcon from '@mui/icons-material/NotificationsAct
 import { styled } from '@mui/material/styles';
 
 import { formatDistance, subDays } from 'date-fns';
+import { useNavigate } from 'react-router';
 
 const NotificationsBadge = styled(Badge)(
   ({ theme }) => `
@@ -43,6 +44,7 @@ const NotificationsBadge = styled(Badge)(
 function HeaderNotifications() {
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
+  const navigation= useNavigate()
 
   const handleOpen = (): void => {
     setOpen(true);
@@ -51,6 +53,10 @@ function HeaderNotifications() {
   const handleClose = (): void => {
     setOpen(false);
   };
+    const navigate = (): void => {
+      navigation('/management/notification')
+  };
+  
 
   return (
     <>
@@ -93,8 +99,8 @@ function HeaderNotifications() {
           <ListItem
             sx={{ p: 2, minWidth: 350, display: { xs: 'block', sm: 'flex' } }}
           >
-            <Box flex="1">
-              <Box display="flex" justifyContent="space-between">
+            <Box flex="1" onClick={ navigate } >
+              <Box display="flex" justifyContent="space-between"   >
                 <Typography sx={{ fontWeight: 'bold' }}>
                   Messaging Platform
                 </Typography>
@@ -109,7 +115,6 @@ function HeaderNotifications() {
                 variant="body2"
                 color="text.secondary"
               >
-                {' '}
                 new messages in your inbox
               </Typography>
             </Box>

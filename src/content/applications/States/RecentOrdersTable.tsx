@@ -14,14 +14,11 @@ import {
   TablePagination,
   TableRow,
   TableContainer,
-  Select,
-  MenuItem,
   Typography,
   useTheme,
   CardHeader,
   Button
 } from '@mui/material';
-
 import Label from 'src/components/Label';
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
@@ -39,8 +36,8 @@ import Modal from '@mui/material/Modal';
 interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
+  onActivestatus : any ;
 }
-
 interface Filters {
   status?: CryptoOrderStatus;
 }
@@ -89,10 +86,9 @@ const applyPagination = (
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
+const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders , onActivestatus }) => {
 
-  const [data , setData] = useState(cryptoOrders)
-// console.log(data , "dataaa")
+
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -113,7 +109,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     if (allpermission.length != 0) {
       allpermission.forEach((data :any) => {
         if (data.flag == 'States') {
-          console.log(data.name , "name")
           if (data.name == 'Edit') {
             setEditState(true);
           }
@@ -156,11 +151,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     const formData = {
       state_id: e
     };
-
     store.dispatch(statusState(formData)).then((res: any) => {
       if (res.payload.status == true) {
         toast.success(res.payload.message);
-        //  setPermissions([]);
+        onActivestatus()
       } else {
         toast.error(res.payload.message);
       }
@@ -175,8 +169,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     store.dispatch(deleteState(formData)).then((res: any) => {
       if (res.payload.status == true) {
         toast.success(res.payload.message);
-        //  setPermissions([]);
-
+        onActivestatus()
       } else {
         toast.error(res.payload.message);
       }
@@ -430,7 +423,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   onClick={()=> {deletePermissionById(cryptoOrder.id)}}
               >
              
-                yes delete it
+                 Delete
               </Button>
               </Box>
             </Box>

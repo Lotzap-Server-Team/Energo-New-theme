@@ -42,7 +42,7 @@ const userList = ()=>{
 
   return (
     <Card>
-      <RecentOrdersTable cryptoOrders={conpaniesData} />
+      <RecentOrdersTable cryptoOrders={conpaniesData} onActivestatus={()=>{ userList() }} />
     </Card>
   );
 }

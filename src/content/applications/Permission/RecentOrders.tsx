@@ -8,6 +8,8 @@ import { store } from 'src/redux/store';
 
 function RecentOrders() {
   const [conpaniesData, setCompanyData]=useState([])
+  const [deletpermission, setDeletpermission]=useState([])
+
 useEffect(()=>{
 
   getPermissionList()
@@ -22,13 +24,17 @@ function getPermissionList(){
   }
 }
 
-
+const resenddata = ()=>{
+  store.dispatch(getPermissions()).then((res: any) => {
+      setCompanyData(res.payload?.permissions);
+  }); 
+}
  
  
 
   return (
     <Card>
-      <RecentOrdersTable cryptoOrders={conpaniesData} />
+      <RecentOrdersTable cryptoOrders={conpaniesData} ondeletepermission={()=> resenddata()} />
     </Card>
   );
 }

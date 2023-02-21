@@ -29,7 +29,7 @@ const companyList = ()=>{
 
   return (
     <Card>
-      <RecentOrdersTable cryptoOrders={conpaniesData} />
+      <RecentOrdersTable cryptoOrders={conpaniesData} onActivestatus={()=>{ companyList() }}  />
     </Card>
   );
 }

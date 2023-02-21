@@ -53,7 +53,6 @@ function Editpermission() {
   const theme = useTheme();
   const navigate = useNavigate();
   const [company_id, setCompanyId] = useState('');
-  const [id, setId] = useState();
 
   const [name, setName] = useState('');
   const [url, setUrl] = useState('');
@@ -89,8 +88,7 @@ function Editpermission() {
     e.preventDefault();
     if(isValidData()){
     const formData = {
-      // id:company_id,
-      id:id,
+      id:company_id,
       name:name,
       url:url,                           
       parent:parent
@@ -186,7 +184,7 @@ function Editpermission() {
                           ))}
                         </Select>
                       </FormControl>
-                      <Grid item xs={12} sm={6} sx={{ my: 1 }}>
+                      <Grid item xs={12} sm={6} >
                         <TextField
                           margin="normal"
                           id="title"
@@ -205,7 +203,7 @@ function Editpermission() {
                         />
                         {dirtyFields['parent'] && getError('Title is requried')}
                       </Grid>
-                      <Grid item xs={12} sm={6} sx={{ my: 1 }}>
+                      <Grid item xs={12} sm={6} >
                         <TextField
                           margin="normal"
                           id="url"

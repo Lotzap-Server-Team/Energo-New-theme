@@ -49,7 +49,11 @@ interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
 }
-
+interface RecentOrdersTableProps {
+  className?: string;
+  cryptoOrders: CryptoOrder[];
+  onActivestatus : any ;
+}
 interface Filters {
   status?: CryptoOrderStatus;
 }
@@ -97,7 +101,7 @@ const applyPagination = (
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
+const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActivestatus }) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -195,8 +199,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       store.dispatch(statusCompany(formData)).then((res: any) => {
       if(res.payload.status==true){
        toast.success(res.payload.message);
-        getCompanyData();
-        window.location.reload();
+       onActivestatus()
       }else{
            toast.error(res.payload.message);
       }
@@ -375,7 +378,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                           Active
                         </Button>
                       ) : (
-                        <Button color="error">Inactive</Button>
+                        <Button color="error"   onClick={() => statusUpdateCompany(cryptoOrder.id)}>Inactive</Button>
                       )}
                     </Typography>
                   </TableCell>
