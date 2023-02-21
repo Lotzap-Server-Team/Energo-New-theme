@@ -7,3 +7,8 @@
 .css-e1skaf-MuiButtonBase-root-MuiButton-root:hover {
     background-color:#fc3e3b !important ;
 }
+.css-nwdjm8-MuiStack-root>:not(style)+:not(style) {
+    margin:5px  10px 5px 10px  !important ;
+    
+    
+}

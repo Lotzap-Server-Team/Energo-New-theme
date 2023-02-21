@@ -1,14 +1,10 @@
 import { FC, ChangeEvent, useState, useEffect } from 'react';
-
 import PropTypes from 'prop-types';
 import {
   Tooltip,
   Divider,
   Box,
-  FormControl,
-  InputLabel,
   Card,
-  Checkbox,
   IconButton,
   Table,
   TableBody,
@@ -17,58 +13,37 @@ import {
   TablePagination,
   TableRow,
   TableContainer,
-  Select,
-  MenuItem,
   Typography,
   useTheme,
   CardHeader,
   Button
 } from '@mui/material';
-
-import Label from 'src/components/Label';
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
-import { Navigate, useLocation, useNavigate, useParams } from 'react-router';
+import {  useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { store } from 'src/redux/store';
 import { deleteCountry, StatusCountry } from 'src/redux/store/reducers/slices/UserSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Modal from '@mui/material/Modal';
-import useId from '@mui/material/utils/useId';
 
 
 interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
+  onActiveClick : any
+
 }
 
 interface Filters {
   status?: CryptoOrderStatus;
 }
 
-const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
-  const map = {
-    failed: {
-      text: 'Failed',
-      color: 'error'
-    },
-    completed: {
-      text: 'Completed',
-      color: 'success'
-    },
-    pending: {
-      text: 'Pending',
-      color: 'warning'
-    }
-  };
 
-  const { text, color }: any = map[cryptoOrderStatus];
 
-  return <Label color={color}>{text}</Label>;
-};
 
 const applyFilters = (
   cryptoOrders: CryptoOrder[],
@@ -93,7 +68,8 @@ const applyPagination = (
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
+const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders, onActiveClick  }) => {
+
 
 
 
@@ -107,7 +83,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
    if(allpermission.length != 0){
     allpermission.forEach((data) => {
       if(data.flag=='Countries'){
-        // console.log(data.name , "flag")
         if(data.name == 'Edit'){
           setEditCountry(true)
         }
@@ -118,17 +93,15 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     });
   }
   }
-
   useEffect(()=>{
     givepermission()
   })
-
-
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
   const selectedBulkActions = selectedCryptoOrders.length > 0;
   const [page, setPage] = useState<number>(0);
+  const [activeStatus, setActiveStatus] = useState<any>(true);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
     status: null
@@ -163,6 +136,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
         store.dispatch(deleteCountry(formdata)).then((res: any) => {
           if (res.payload.status == true) {
             toast.success(res.payload.message);
+            onActiveClick(2)
           } else {
             toast.error(res.payload.message);
           }
@@ -179,7 +153,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     store.dispatch(StatusCountry(formData)).then((res: any) => {
       if (res.payload.status == true) {
         toast.success(res.payload.message);
-          
+        onActiveClick()
       } else {
         toast.error(res.payload.message);
       }
@@ -205,44 +179,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     }
   ];
 
-  const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    let value = null;
 
-    if (e.target.value !== 'all') {
-      value = e.target.value;
-    }
 
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      status: value
-    }));
-  };
-
-  const handleSelectAllCryptoOrders = (
-    event: ChangeEvent<HTMLInputElement>
-  ): void => {
-    setSelectedCryptoOrders(
-      event.target.checked
-        ? cryptoOrders.map((cryptoOrder) => cryptoOrder.id)
-        : []
-    );
-  };
-
-  const handleSelectOneCryptoOrder = (
-    event: ChangeEvent<HTMLInputElement>,
-    cryptoOrderId: string
-  ): void => {
-    if (!selectedCryptoOrders.includes(cryptoOrderId)) {
-      setSelectedCryptoOrders((prevSelected) => [
-        ...prevSelected,
-        cryptoOrderId
-      ]);
-    } else {
-      setSelectedCryptoOrders((prevSelected) =>
-        prevSelected.filter((id) => id !== cryptoOrderId)
-      );
-    }
-  };
 
   const handlePageChange = (event: any, newPage: number): void => {
     setPage(newPage);
@@ -251,18 +189,15 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setLimit(parseInt(event.target.value));
   };
-
   const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
-  const paginatedCryptoOrders = applyPagination(
+  let paginatedCryptoOrders = applyPagination(
     filteredCryptoOrders,
     page,
     limit
   );
-  const selectedSomeCryptoOrders =
-    selectedCryptoOrders.length > 0 &&
-    selectedCryptoOrders.length < cryptoOrders.length;
-  const selectedAllCryptoOrders =
-    selectedCryptoOrders.length === cryptoOrders.length;
+
+  // console.log(paginatedCryptoOrders,"data")
+
   const theme = useTheme();
 
   return (
@@ -286,7 +221,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder: any, i) => {
+            {paginatedCryptoOrders.map((cryptoOrder: any, i:any) => {
 
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
                 cryptoOrder.id
@@ -330,8 +265,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                     >
                       {cryptoOrder.is_active ==1 ? <Button color="success"  onClick={()=> statusUpdateCountry(cryptoOrder.id)}
                           > Active </Button> :  <Button color='error'
-                          //  sx={{
-                          // background: theme.colors.error.lighter,}}
                            onClick={()=> statusUpdateCountry(cryptoOrder.id)} > 
                            Inactive </Button>}
                     </Typography>
@@ -392,7 +325,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                 variant="h4"
                 sx={{ color: 'black', textAlign: 'center' , mt : 3   }}
               >
-                Are you sure want to delete this ?{' '}
+                Are you sure want to delete this ?
               </Typography>
               <Box sx={{ textAlign : 'center' , mt : 3 }} >
               <Button
@@ -411,8 +344,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                 sx={{ mx:1 , background: '#f44336', color: 'white' }}
                   onClick={()=> { deletecountry(cryptoOrder.id)}}
               >
-             
-                yes delete it
+               Delete
               </Button>
               </Box>
             </Box>

@@ -41,6 +41,7 @@ import Modal from '@mui/material/Modal';
 interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
+  ondeletepermission :any ; 
 }
 
 interface Filters {
@@ -91,7 +92,7 @@ const applyPagination = (
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
+const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders ,ondeletepermission }) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -134,15 +135,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     
           store.dispatch(deletePermission(formData)).then((res: any) => {
             if(res.payload.status==true){
-              // setPermissions((prevRows : any) => {
-              //   const rowToDeleteIndex = randomInt(0, prevRows.length - 1);
-              //   return [
-              //     ...permissions.slice(0, rowToDeleteIndex),
-              //     ...permissions.slice(rowToDeleteIndex + 1),
-              //   ];
-              // });
+              ondeletepermission()
              toast.success(res.payload.message);
-            //  setPermissions([]);
             }else{
                  toast.error(res.payload.message);
             }
@@ -375,7 +369,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                 onClick={()=> {deletePermissionById(cryptoOrder.id)}}
               >
              
-                yes delete it
+                Delete
               </Button>
               </Box>
             </Box>

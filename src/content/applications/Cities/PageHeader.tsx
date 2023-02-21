@@ -15,7 +15,6 @@ function PageHeader() {
     var allpermission = JSON.parse(permissions)
    if(allpermission.length != 0){
     allpermission.forEach((data :any) => {
-      console.log(data.flag , "ghhhhhhhghhghghg")
       if(data.flag=='Cities'){
         if(data.name == 'Add'){
           setAddCity(true)
@@ -45,7 +44,9 @@ function PageHeader() {
         </Typography>
       </Grid>
       <Grid item>
-        <Button
+        {
+          addcity &&  
+          <Button
           sx={{ mt: { xs: 2, md: 0 } }}
           variant="contained"
           startIcon={<AddTwoToneIcon fontSize="small" />}
@@ -54,6 +55,8 @@ function PageHeader() {
         >
           Add City
         </Button>
+        }
+     
       </Grid>
     </Grid>
   );

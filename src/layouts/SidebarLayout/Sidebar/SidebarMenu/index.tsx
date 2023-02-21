@@ -212,14 +212,10 @@ function SidebarMenu() {
 
   function addPermission(){
         var permissions:any = localStorage.getItem('permissions')
-        // console.log(permissions , "permisiionsss")
         var allPermission:any =JSON.parse(permissions)?JSON.parse(permissions):[];
-        // console.log(allPermission ,' allpermission')
         if(allPermission.length != 0){
         allPermission.forEach((per:any) => {
-          // console.log( per , "8888888888888888888");
           if(capitalizeFirstLetter(per.flag) == "Companies"){
-            // console.log(per.name)
             if(per.name == "Index"){
               setCompanyIndex(true)
             }

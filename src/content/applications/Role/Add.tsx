@@ -61,15 +61,13 @@ function AddRole() {
       guard_name:'web'
     }
     store.dispatch(createRole(formData)).then((res: any) => {
-      // console.log(res , "res from role")
       if (res.payload.status == true) {
         setErrorMessages('');
         navigate("/management/role");
-        alert("Successfully")
+        // alert("Successfully")
       } else {
         setErrorMessages(res.payload?.message);
       }
-      // console.log(res.payload, "from roles")
     });           
   };
   }

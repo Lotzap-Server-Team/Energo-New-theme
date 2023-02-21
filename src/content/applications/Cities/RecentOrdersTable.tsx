@@ -18,13 +18,12 @@ import {
   CardHeader,
   Button
 } from '@mui/material';
-
 import Label from 'src/components/Label';
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
-import { Navigate, useNavigate, useParams } from 'react-router';
+import {  useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { store } from 'src/redux/store';
 import {
@@ -39,6 +38,7 @@ import { propsToClassKey } from '@mui/styles';
 interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
+  onActivestatus :any ;
 }
 
 interface Filters {
@@ -89,7 +89,7 @@ const applyPagination = (
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
+const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders , onActivestatus }) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -110,8 +110,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     if (allpermission.length != 0) {
       allpermission.forEach((data :any) => {
         if (data.flag == 'Cities') {
-        console.log(data.name, 'ghhhhhhhghhghghg');
-
           if (data.name == 'Edit') {
             setEditCity(true);
           }
@@ -156,13 +154,15 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     store.dispatch(deleteCity(formData)).then((res: any) => {
       if (res.payload.status == true) {
         toast.success(res.payload.message);
-        //  setPermissions([]);
+        onActivestatus()
       } else {
         toast.error(res.payload.message);
       }
     });
     setOpen(false);
   };
+
+
   const statusUpdateCountry = (e: any) => {
     const formData = {
       city_id: e
@@ -170,31 +170,14 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     store.dispatch(statusCity(formData)).then((res: any) => {
       if (res.payload.status == true) {
         toast.success(res.payload.message);
-        // setCountries([]);
+        onActivestatus()
       } else {
         toast.error(res.payload.message);
       }
     });
   };
 
-  const statusOptions = [
-    {
-      id: 'all',
-      name: 'All'
-    },
-    {
-      id: 'completed',
-      name: 'Completed'
-    },
-    {
-      id: 'pending',
-      name: 'Pending'
-    },
-    {
-      id: 'failed',
-      name: 'Failed'
-    }
-  ];
+
 
   const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
@@ -249,11 +232,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     page,
     limit
   );
-  const selectedSomeCryptoOrders =
-    selectedCryptoOrders.length > 0 &&
-    selectedCryptoOrders.length < cryptoOrders.length;
-  const selectedAllCryptoOrders =
-    selectedCryptoOrders.length === cryptoOrders.length;
+  
   const theme = useTheme();
 
   return (
@@ -438,7 +417,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                               deletePermissionById(cryptoOrder.id);
                             }}
                           >
-                            yes delete it
+                            Delete
                           </Button>
                         </Box>
                       </Box>

@@ -1,14 +1,7 @@
 import { Helmet } from 'react-helmet-async';
-import PageTitle from 'src/components/PageTitle';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import {
-  createTheme,
-  Theme,
-  ThemeProvider,
-  useTheme
-} from '@mui/material/styles';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import {useTheme} from '@mui/material/styles';
 import {
   Container,
   Grid,
@@ -25,42 +18,25 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import { pink } from '@mui/material/colors';
-import Checkbox from '@mui/material/Checkbox';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-
-import Stack from '@mui/material/Stack';
-import Slider from '@mui/material/Slider';
-import VolumeDown from '@mui/icons-material/VolumeDown';
-import VolumeUp from '@mui/icons-material/VolumeUp';
-
-import Switch from '@mui/material/Switch';
 import {
   createPermission,
   getPermissionParent
 } from 'src/redux/store/reducers/slices/UserSlice';
 import { store } from 'src/redux/store';
-
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
-
 function Addpermission() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const [company_id, setCompanyId] = useState();
   const [name, setName] = useState('');
   const [url, setUrl] = useState('');
   const [parent, setParent] = useState('');
   const [onload, setOnload] = useState(false);
   const [errorMessages, setErrorMessages] = useState('');
   const [permissions, setPermissions] = useState([]);
-  const [flag,setFlag] = useState('');
   const [dirtyFields, setDirtyFields] = useState({
     name: false,
     url: false,
@@ -77,14 +53,11 @@ function Addpermission() {
     const validateFields = ifEmpty(name && url && parent);
     return validateFields;
   };
+
   const selectChange = (event: SelectChangeEvent) => {
     setParent(event.target.value);
-    permissions.forEach((res:any)=>{
-      if(res.id == event.target.value){
-        setFlag(res.name)
-      }
-    })
   };
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
       const formData = {
@@ -92,7 +65,7 @@ function Addpermission() {
         url: url,
         parent: parent,
         guard_name: 'web' , 
-        flag : flag==''?name:flag
+          flag : 'flag'
       };
       console.log(formData , "data")
       store.dispatch(createPermission(formData)).then((res: any) => {
@@ -117,8 +90,6 @@ function Addpermission() {
     }
   });
 
-  const renderErrorMessage = () =>
-    errorMessages && <div className="error">{errorMessages}</div>;
 
   const getError = (msg: string): JSX.Element => {
     return (
@@ -155,16 +126,16 @@ function Addpermission() {
                   autoComplete="off"
                 >
                   <Grid container spacing={2} rowSpacing={1}>
-                    <Grid item xs={6} sm={6} mt={2}>
+                    <Grid item xs={6} sm={6} >
                       <FormControl fullWidth>
                         <InputLabel id="parent">Category</InputLabel>
                         <Select
                           labelId="parent"
                           required
                           id="parent"
-                        //   value={parent} 
+                          value={parent} 
                           label="Parent Category"
-                          onChange={selectChange}
+                          onChange={(e)=> setParent(e.target.value)}
                         >
                           <MenuItem value="">-Select-</MenuItem>
                           <MenuItem value="">ihdijhd</MenuItem>
@@ -176,7 +147,7 @@ function Addpermission() {
                           ))}
                         </Select>
                       </FormControl>
-                      <Grid item xs={12} sm={6} sx={{ my: 1 }}>
+                      <Grid item xs={12} sm={6} >
                         <TextField
                           margin="normal"
                           id="title"

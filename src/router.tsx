@@ -1,11 +1,24 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { RouteObject } from 'react-router';
-
 import SidebarLayout from 'src/layouts/SidebarLayout';
 import BaseLayout from 'src/layouts/BaseLayout';
-
 import SuspenseLoader from 'src/components/SuspenseLoader';
+
+
+
+function Getdatafrom(){
+
+  const[folder , setFolder] = useState('')
+  const getfolder = (val:any) =>{
+
+  }
+  return(
+    <>
+   
+    </>
+  )
+}
 
 
 const Loader = (Component) => (props) =>
@@ -14,6 +27,10 @@ const Loader = (Component) => (props) =>
       <Component {...props} />
     </Suspense>
   );
+
+ 
+
+
 
 // Pages
 
@@ -54,6 +71,9 @@ const States = Loader(
 
 const Cities = Loader(
   lazy(() => import('src/content/applications/Cities'))
+);
+const Notification = Loader(
+  lazy(() => import('src/content/applications/Notification'))
 );
 
 //company
@@ -143,33 +163,13 @@ const EditUsers = Loader(
 const ViewUsers = Loader(
   lazy(() => import('src/content/applications/UsersLists/View'))
 );
-// Components
 
 
 
 
 
-const Buttons = Loader(
-  lazy(() => import('src/content/pages/Components/Buttons'))
-);
-const Modals = Loader(
-  lazy(() => import('src/content/pages/Components/Modals'))
-);
-const Accordions = Loader(
-  lazy(() => import('src/content/pages/Components/Accordions'))
-);
-const Tabs = Loader(lazy(() => import('src/content/pages/Components/Tabs')));
-const Badges = Loader(
-  lazy(() => import('src/content/pages/Components/Badges'))
-);
-const Tooltips = Loader(
-  lazy(() => import('src/content/pages/Components/Tooltips'))
-);
-const Avatars = Loader(
-  lazy(() => import('src/content/pages/Components/Avatars'))
-);
-const Cards = Loader(lazy(() => import('src/content/pages/Components/Cards')));
-const Forms = Loader(lazy(() => import('src/content/pages/Components/Forms')));
+
+
 
 // Status
 
@@ -186,7 +186,11 @@ const StatusMaintenance = Loader(
   lazy(() => import('src/content/pages/Status/Maintenance'))
 );
 
+
+
+
 const routes: RouteObject[] = [
+
   {
     path: '',
     element: <BaseLayout />,
@@ -296,6 +300,14 @@ const routes: RouteObject[] = [
          ]
       },
       {
+        path: 'notification',
+        element:< Notification /> , 
+         children: [
+       
+        
+         ]
+      },
+      {
         path: 'permissions',
         element:<Permission/> , 
          children: [
@@ -355,11 +367,11 @@ const routes: RouteObject[] = [
       // Country Components
       {
         path: 'addcountry',
-        element: <AddCountries />
+        element: <AddCountries  />
       },
       {
         path: 'editcountry/:id',
-        element: <EditCountries />
+        element: <EditCountries  />
       },
       {
         path: 'show-company-folders/:id',
@@ -417,56 +429,59 @@ const routes: RouteObject[] = [
         path: 'companyfolders/:id/:folderId',
         element: <CompanyFoldersView/>
       },
-    ]
-    
+
+    ] 
     
   },
-  {
-    path: '/components',
-    element: <SidebarLayout />,
-    children: [
-      {
-        path: '',
-        element: <Navigate to="buttons" replace />
-      },
-      {
-        path: 'buttons',
-        element: <Buttons />
-      },
-      {
-        path: 'modals',
-        element: <Modals />
-      },
-      {
-        path: 'accordions',
-        element: <Accordions />
-      },
-      {
-        path: 'tabs',
-        element: <Tabs />
-      },
-      {
-        path: 'badges',
-        element: <Badges />
-      },
-      {
-        path: 'tooltips',
-        element: <Tooltips />
-      },
-      {
-        path: 'avatars',
-        element: <Avatars />
-      },
-      {
-        path: 'cards',
-        element: <Cards />
-      },
-      {
-        path: 'forms',
-        element: <Forms />
-      }
-    ]
-  }
+
+  
+
+  // {
+  //   path: '/components',
+  //   element: <SidebarLayout />,
+  //   children: [
+  //     {
+  //       path: '',
+  //       element: <Navigate to="buttons" replace />
+  //     },
+  //     {
+  //       path: 'buttons',
+  //       element: <Buttons />
+  //     },
+  //     {
+  //       path: 'modals',
+  //       element: <Modals />
+  //     },
+  //     {
+  //       path: 'accordions',
+  //       element: <Accordions />
+  //     },
+  //     {
+  //       path: 'tabs',
+  //       element: <Tabs />
+  //     },
+  //     {
+  //       path: 'badges',
+  //       element: <Badges />
+  //     },
+  //     {
+  //       path: 'tooltips',
+  //       element: <Tooltips />
+  //     },
+  //     {
+  //       path: 'avatars',
+  //       element: <Avatars />
+  //     },
+  //     {
+  //       path: 'cards',
+  //       element: <Cards />
+  //     },
+  //     {
+  //       path: 'forms',
+  //       element: <Forms />
+  //     }
+  //   ]
+  // }
 ];
 
 export default routes;
