@@ -121,7 +121,7 @@ function CompanyView() {
                    
                     <Divider />
                       <Toolbar  sx={{ ml: 0 ,pl:"0 !important"}}>
-                        <Button variant="contained" component={Link} to="/companies" sx={{ ml: 1 }} >Cancel </Button>
+                        <Button variant="contained" component={Link} to="/management/transactions" sx={{ ml: 1, mt:3 }} >Cancel </Button>
                       </Toolbar> 
                       </Box>
                 </Paper>

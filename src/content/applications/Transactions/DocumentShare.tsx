@@ -38,8 +38,8 @@ function DocumentShare(props: shareData) {
     documents.forEach((element: any) => {
       foldersArray.push(element.id);
     });
-    var companyId = documents[0].company_id;
-
+    // var companyId = documents[0].company_id;
+ const id = params.id
     e.preventDefault();
     const formData = {
       name: name,
@@ -58,8 +58,8 @@ function DocumentShare(props: shareData) {
       }
     });
   };
-  function cancel() {
-    navigate(`/companies/document/${documents[0].company_id}`);
+  function cancel(id: any) {
+    navigate(`/management/show-company-folders/${params.id}`);
   }
 
   var storedArray = localStorage.getItem('ourarraykey');

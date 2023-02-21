@@ -145,8 +145,8 @@ export default function companyFoldersView() {
                   <Toolbar sx={{ ml: 0, pl: "0 !important" }} className="mt-4">
                     <Button
                       variant="contained"
-                      // component={Link}
-                      // to="/companies/document/"
+                      component={Link}
+                      to="management/show-company-folders/:id"
                       sx={{ ml: 1, mt:2 }}
                       onClick={back}
                     >

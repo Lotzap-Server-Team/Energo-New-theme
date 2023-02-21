@@ -39,7 +39,7 @@ import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
 import Modal from '@mui/material/Modal';
 import { store } from 'src/redux/store';
-import { deleteCompany } from 'src/redux/store/reducers/slices/UserSlice';
+import { deleteCompany, getCompanies, statusCompany } from 'src/redux/store/reducers/slices/UserSlice';
 import { toast } from 'react-toastify';
 interface RecentOrdersTableProps {
   className?: string;
@@ -100,6 +100,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const selectedBulkActions = selectedCryptoOrders.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
+  const [companiesss,setCompanies] = useState([]);
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
@@ -180,7 +181,30 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
         : []
     );
   };
-
+  const getCompanyData =()=>{
+    store.dispatch(getCompanies()).then((res: any) => {
+      if (res.payload.status == true) {
+        setCompanies(res.payload.companies);
+      }else{
+        toast.error(res.payload.message)
+      }
+    }); 
+  }
+  
+  const statusUpdateCompany =(e:any)=>{
+    const formData= {
+      id : e
+    }
+      store.dispatch(statusCompany(formData)).then((res: any) => {
+      if(res.payload.status==true){
+       toast.success(res.payload.message);
+        getCompanyData();
+      }else{
+           toast.error(res.payload.message);
+      }
+    }); 
+  }
+  
   const handleSelectOneCryptoOrder = (
     event: ChangeEvent<HTMLInputElement>,
     cryptoOrderId: string
@@ -348,7 +372,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.is_active == '1'? <Button  color="success">Active</Button>:<Button  color="error">Inactive</Button>}
+                      {cryptoOrder.is_active == '1'? <Button  color="success"  onClick={() => {
+                           statusUpdateCompany(cryptoOrder.id);
+                          }}>Active</Button>:<Button  color="error">Inactive</Button>}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
@@ -388,7 +414,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         }}
                         color="inherit"
                         size="small"
-                        onClick= { handleOpen }
+                        onClick= {handleOpen}
                       >
                         <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>

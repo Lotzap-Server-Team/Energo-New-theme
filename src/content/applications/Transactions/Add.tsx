@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import PageTitle from 'src/components/PageTitle';
-import { useEffect, useState } from 'react';
+import { Component, useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {createTheme, Theme, ThemeProvider,useTheme  } from '@mui/material/styles';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -146,14 +146,11 @@ const currencies = [
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>Add Company</title>
-      </Helmet>
-      <PageTitleWrapper>
-        <h1>Add Company</h1>
-        <p>Create your company here add start your business.</p>
-      </PageTitleWrapper>
-      <Container maxWidth="lg">
+      </Helmet> */}
+  
+      <Container maxWidth="lg" sx={{mt:4}}>
         <Grid
           container
           direction="row"
@@ -375,7 +372,7 @@ const currencies = [
                         >
                         Submit
                           </Button>
-                        <Button variant="contained" sx={{ml:2}}>Cancel </Button>
+                        <Button variant="contained" component={Link} to="/management/transactions" sx={{ml:2}}>Cancel </Button>
                       </Toolbar> 
                   </div>
                 </Box>
