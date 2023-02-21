@@ -126,23 +126,23 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     pt: 2,
     pb: 3
   };
-  const deleteUserById=(e:any)=>{
+  const deleteUserById = (e: any) => {
     store.dispatch(deleteUser(e)).then((res: any) => {
-     if(res.payload.status==true){
-       // setPermissions((prevRows : any) => {
-       //   const rowToDeleteIndex = randomInt(0, prevRows.length - 1);
-       //   return [
-       //     ...permissions.slice(0, rowToDeleteIndex),
-       //     ...permissions.slice(rowToDeleteIndex + 1),
-       //   ];
-       // });
-      toast.success(res.payload.message);
-     //  setPermissions([]);
-     }else{
-          toast.error(res.payload.message);
-     }
-   }); 
- }
+      if (res.payload.status == true) {
+        // setPermissions((prevRows : any) => {
+        //   const rowToDeleteIndex = randomInt(0, prevRows.length - 1);
+        //   return [
+        //     ...permissions.slice(0, rowToDeleteIndex),
+        //     ...permissions.slice(rowToDeleteIndex + 1),
+        //   ];
+        // });
+        toast.success(res.payload.message);
+        //  setPermissions([]);
+      } else {
+        toast.error(res.payload.message);
+      }
+    });
+  };
   const statusOptions = [
     {
       id: 'all',
@@ -179,7 +179,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       id: e
     };
     const userList = () => {
-
       store.dispatch(getUsers()).then((res: any) => {
         setUsers(res.payload.users);
       });
@@ -188,9 +187,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       if (res.payload.status == true) {
         toast.success(res.payload.message);
         userList();
-        window.location.reload()
-     } else {
-      toast.error(res.payload.message);
+        window.location.reload();
+      } else {
+        toast.error(res.payload.message);
       }
     });
   };
@@ -231,14 +230,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           <BulkActions />
         </Box>
       )}
-      {!selectedBulkActions && <CardHeader title="Users List" />}
+      {!selectedBulkActions && <CardHeader title="Users" />}
       <Divider />
       <TableContainer>
-        <Table  sx={{ minWidth: 1100}} >
+        <Table sx={{ minWidth: 1100 }}>
           <TableHead>
-            <TableRow
-            
-            >
+            <TableRow>
               {/* <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
@@ -379,7 +376,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-           
                     {/* <Tooltip title="Edit Company" arrow>
                       <IconButton
                         sx={{
@@ -444,50 +440,55 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         }}
                         color="inherit"
                         size="small"
-                        onClick= { handleOpen }
+                        onClick={handleOpen}
                       >
                         <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
                   {open && (
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="parent-modal-title"
-            aria-describedby="parent-modal-description"
-          >
-            <Box sx={{ ...style, width: 400 }}>
-              <Typography
-                variant="h4"
-                sx={{ color: 'black', textAlign: 'center' , mt : 3   }}
-              >
-                Are you sure want to delete this ?{' '}
-              </Typography>
-              <Box sx={{ textAlign : 'center' , mt : 3 }} >
-              <Button
-                variant="outlined"
-                sx={{
-                  background: '#3d6df9',
-                  color: 'white',
-                  mx:1
-                }}
-                onClick={handleClose}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                sx={{ mx:1 , background: '#f44336', color: 'white' }}
-                onClick={()=> {deleteUserById(cryptoOrder.id)}}
-              >
-             
-                yes delete it
-              </Button>
-              </Box>
-            </Box>
-          </Modal>
-        )}
+                    <Modal
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="parent-modal-title"
+                      aria-describedby="parent-modal-description"
+                    >
+                      <Box sx={{ ...style, width: 400 }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ color: 'black', textAlign: 'center', mt: 3 }}
+                        >
+                          Are you sure want to delete this ?{' '}
+                        </Typography>
+                        <Box sx={{ textAlign: 'center', mt: 3 }}>
+                          <Button
+                            variant="outlined"
+                            sx={{
+                              background: '#3d6df9',
+                              color: 'white',
+                              mx: 1
+                            }}
+                            onClick={handleClose}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            variant="contained"
+                            sx={{
+                              mx: 1,
+                              background: '#f44336',
+                              color: 'white'
+                            }}
+                            onClick={() => {
+                              deleteUserById(cryptoOrder.id);
+                            }}
+                          >
+                            yes delete it
+                          </Button>
+                        </Box>
+                      </Box>
+                    </Modal>
+                  )}
                 </TableRow>
               );
             })}

@@ -39,7 +39,11 @@ import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
 import Modal from '@mui/material/Modal';
 import { store } from 'src/redux/store';
-import { deleteCompany, getCompanies, statusCompany } from 'src/redux/store/reducers/slices/UserSlice';
+import {
+  deleteCompany,
+  getCompanies,
+  statusCompany
+} from 'src/redux/store/reducers/slices/UserSlice';
 import { toast } from 'react-toastify';
 interface RecentOrdersTableProps {
   className?: string;
@@ -100,7 +104,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const selectedBulkActions = selectedCryptoOrders.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
-  const [companiesss,setCompanies] = useState([]);
+  const [companiesss, setCompanies] = useState([]);
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
@@ -123,23 +127,15 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     pt: 2,
     pb: 3
   };
-  const deleteCompanyById=(e:any)=>{
-           store.dispatch(deleteCompany(e)).then((res: any) => {
-            if(res.payload.status==true){
-              // setPermissions((prevRows : any) => {
-              //   const rowToDeleteIndex = randomInt(0, prevRows.length - 1);
-              //   return [
-              //     ...permissions.slice(0, rowToDeleteIndex),
-              //     ...permissions.slice(rowToDeleteIndex + 1),
-              //   ];
-              // });
-             toast.success(res.payload.message);
-            //  setPermissions([]);
-            }else{
-                 toast.error(res.payload.message);
-            }
-          }); 
-        }
+  const deleteCompanyById = (e: any) => {
+    store.dispatch(deleteCompany(e)).then((res: any) => {
+      if (res.payload.status == true) {
+        toast.success(res.payload.message);
+      } else {
+        toast.error(res.payload.message);
+      }
+    });
+  };
   const statusOptions = [
     {
       id: 'all',
@@ -191,7 +187,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     }); 
   }
   
-  const statusUpdateCompany =(e:any)=>{
+
+  const statusUpdateCompany=(e:any)=>{
     const formData= {
       id : e
     }
@@ -199,12 +196,14 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       if(res.payload.status==true){
        toast.success(res.payload.message);
         getCompanyData();
+        window.location.reload();
       }else{
            toast.error(res.payload.message);
       }
     }); 
   }
   
+
   const handleSelectOneCryptoOrder = (
     event: ChangeEvent<HTMLInputElement>,
     cryptoOrderId: string
@@ -228,17 +227,15 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setLimit(parseInt(event.target.value));
   };
-  const goEditForm = (id:any)=>{
+  const goEditForm = (id: any) => {
     navigate(`/management/editcompany/${id}`);
-  }
-  const viewForm = (id:any)=>{
+  };
+  const viewForm = (id: any) => {
     navigate(`/management/viewcompany/${id}`);
-  }
-  const showFolders = (id:any)=>{
+  };
+  const showFolders = (id: any) => {
     navigate(`/management/show-company-folders/${id}`);
-  }
-
-
+  };
 
   const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
   const paginatedCryptoOrders = applyPagination(
@@ -260,11 +257,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           <BulkActions />
         </Box>
       )}
-      {!selectedBulkActions && (
-        <CardHeader
-          title="Companies List"
-        />
-      )}
+      {!selectedBulkActions && <CardHeader title="Companies" />}
       <Divider />
       <TableContainer>
         <Table>
@@ -288,8 +281,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder:any, i) => {
-              console.log(cryptoOrder,"cryptoOrdercryptoOrdercryptoOrder");
+            {paginatedCryptoOrders.map((cryptoOrder: any, i) => {
+              console.log(cryptoOrder, 'cryptoOrdercryptoOrdercryptoOrder');
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
                 cryptoOrder.id
               );
@@ -317,7 +310,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {i+1}
+                      {i + 1}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -372,13 +365,28 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.is_active == '1'? <Button  color="success"  onClick={() => {
-                           statusUpdateCompany(cryptoOrder.id);
-                          }}>Active</Button>:<Button  color="error">Inactive</Button>}
+                      {cryptoOrder.is_active == '1' ? (
+                        <Button
+                          color="success"
+                          onClick={() => {
+                            statusUpdateCompany(cryptoOrder.id);
+                          }}
+                        >
+                          Active
+                        </Button>
+                      ) : (
+                        <Button color="error">Inactive</Button>
+                      )}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-                    <Tooltip title="Edit Company" arrow onClick={(e)=>{goEditForm(cryptoOrder.id)}}>
+                    <Tooltip
+                      title="Edit Company"
+                      arrow
+                      onClick={(e) => {
+                        goEditForm(cryptoOrder.id);
+                      }}
+                    >
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -392,7 +400,13 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Edit Company" arrow onClick={(e)=>{viewForm(cryptoOrder.id)}}>
+                    <Tooltip
+                      title="Edit Company"
+                      arrow
+                      onClick={(e) => {
+                        viewForm(cryptoOrder.id);
+                      }}
+                    >
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -414,14 +428,20 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         }}
                         color="inherit"
                         size="small"
-                        onClick= {handleOpen}
+                        onClick={handleOpen}
                       >
                         <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Delete Company" arrow onClick={(e)=>{showFolders(cryptoOrder.id)}}>
+                    <Tooltip
+                      title="Delete Company"
+                      arrow
+                      onClick={(e) => {
+                        showFolders(cryptoOrder.id);
+                      }}
+                    >
                       <IconButton
-                         sx={{
+                        sx={{
                           '&:hover': {
                             background: theme.colors.primary.lighter
                           },
@@ -430,48 +450,53 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         color="inherit"
                         size="small"
                       >
-                           <FileCopyIcon fontSize="small" />
+                        <FileCopyIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
                   {open && (
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="parent-modal-title"
-            aria-describedby="parent-modal-description"
-          >
-            <Box sx={{ ...style, width: 400 }}>
-              <Typography
-                variant="h4"
-                sx={{ color: 'black', textAlign: 'center' , mt : 3   }}
-              >
-                Are you sure want to delete this ?{' '}
-              </Typography>
-              <Box sx={{ textAlign : 'center' , mt : 3 }} >
-              <Button
-                variant="outlined"
-                sx={{
-                  background: '#3d6df9',
-                  color: 'white',
-                  mx:1
-                }}
-                onClick={handleClose}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                sx={{ mx:1 , background: '#f44336', color: 'white' }}
-                onClick={()=> {deleteCompanyById(cryptoOrder.id)}}
-              >
-             
-                yes delete it
-              </Button>
-              </Box>
-            </Box>
-          </Modal>
-        )}
+                    <Modal
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="parent-modal-title"
+                      aria-describedby="parent-modal-description"
+                    >
+                      <Box sx={{ ...style, width: 400 }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ color: 'black', textAlign: 'center', mt: 3 }}
+                        >
+                          Are you sure want to delete this ?{' '}
+                        </Typography>
+                        <Box sx={{ textAlign: 'center', mt: 3 }}>
+                          <Button
+                            variant="outlined"
+                            sx={{
+                              background: '#3d6df9',
+                              color: 'white',
+                              mx: 1
+                            }}
+                            onClick={handleClose}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            variant="contained"
+                            sx={{
+                              mx: 1,
+                              background: '#f44336',
+                              color: 'white'
+                            }}
+                            onClick={() => {
+                              deleteCompanyById(cryptoOrder.id);
+                            }}
+                          >
+                            yes delete it
+                          </Button>
+                        </Box>
+                      </Box>
+                    </Modal>
+                  )}
                 </TableRow>
               );
             })}
