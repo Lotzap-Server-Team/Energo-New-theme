@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 import {
   Avatar,
@@ -15,7 +15,7 @@ import {
   Popover,
   Typography
 } from '@mui/material';
-
+// import Person2Icon from '@mui/icons-material/Person2';
 import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
 import { styled } from '@mui/material/styles';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
@@ -23,7 +23,7 @@ import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 import { toast } from 'react-toastify';
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
         padding-left: ${theme.spacing(1)};
@@ -145,6 +145,10 @@ function HeaderUserbox() {
         </List> */}
         <Divider />
         <Box sx={{ m: 1 }}>
+        <Button color="primary"  fullWidth   component={Link} to="/management/profileview">
+        <AccountCircleIcon sx={{ mr: 2 }} />
+      Profile
+          </Button>
           <Button color="primary" fullWidth onClick={Logout}>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out

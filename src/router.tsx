@@ -7,21 +7,6 @@ import SuspenseLoader from 'src/components/SuspenseLoader';
 import React from 'react';
 
 
-
-function Getdatafrom(){
-
-  const[folder , setFolder] = useState('')
-  const getfolder = (val:any) =>{
-
-  }
-  return(
-    <>
-   
-    </>
-  )
-}
-
-
 const Loader = (Component) => (props) =>
   (
     <Suspense fallback={<SuspenseLoader />}>
@@ -172,13 +157,10 @@ const ViewUsers = Loader(
   lazy(() => import('src/content/applications/UsersLists/View'))
 );
 
-
-
-
-
-
-
-
+//profile
+const Profile = Loader(
+  lazy(() => import('src/content/applications/Profile/EditProfile'))
+);
 // Status
 
 const Status404 = Loader(
@@ -424,6 +406,10 @@ const routes: RouteObject[] = [
       {
         path: 'addcompany',
         element: <AddCompany/>
+      },
+      {
+        path: 'profileview',
+        element: <Profile/>
       },
       {
         path: 'editcompany/:id',
