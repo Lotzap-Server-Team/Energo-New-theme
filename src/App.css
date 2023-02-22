@@ -12,3 +12,25 @@
     
     
 }
+.css-h9f53t-MuiBackdrop-root-MuiModal-backdrop.MuiBackdrop-invisible{
+    background-color: transparent !important;
+     backdrop-filter: blur(0px) !important;
+}
+.css-1t2y6b1-MuiButtonBase-root-MuiButton-root{
+    color: white !important;
+}
+.css-oz02fr-MuiButtonBase-root-MuiButton-root{
+    color: white !important;
+}
+.css-ql94r2-MuiButtonBase-root-MuiButton-root{
+    color: white !important;
+}
+.css-8wcalr-MuiButtonBase-root-MuiButton-root{
+    color: white !important;
+}
+.css-494sfp-MuiButtonBase-root-MuiButton-root:hover{
+background-color: transparent !important;
+}
+.MuiTypography-root.MuiTypography-body1.MuiTypography-gutterBottom.MuiTypography-noWrap.css-oqkyzc-MuiTypography-root:focus-visible {
+    outline: none !important;
+}

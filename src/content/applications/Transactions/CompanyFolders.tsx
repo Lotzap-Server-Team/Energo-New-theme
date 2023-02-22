@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardContent,
   Divider,
+  Box,
   Select,
   SelectChangeEvent,
   Typography,
@@ -19,6 +20,7 @@ import {
 import Footer from 'src/components/Footer';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import './Company.css';
+import Modal from '@mui/material/Modal';
 import {
   createCompanyFolder,
   getCompanyFolder,
@@ -43,10 +45,9 @@ import { toast } from 'react-toastify';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 
-type data={
-datatable:Function ;
-}
-
+type data = {
+  datatable: Function;
+};
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -57,7 +58,16 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 ////////////////////
-
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  pt: 2,
+  pb: 3
+};
 const mdTheme = createTheme();
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -68,7 +78,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   }
 }));
 
-function companyFolders(props:data) {
+function companyFolders(props: data) {
   const navigate = useNavigate();
   const fileInput = useRef<any | null>(null);
   const params = useParams();
@@ -80,54 +90,64 @@ function companyFolders(props:data) {
   const [openFolder, setFolder] = React.useState(false);
   const [disabled, setDisabled] = useState(false);
   const [open, setOpen] = React.useState(false);
-  
+  const [documentopen, setDocumentopen] = useState(false);
+  const [checked, setCheked] = useState(false)
   // console.log('my id', params.id);
   var foldersData: any = [];
-  var newArray:any =[]  
+  var newArray: any = [];
   function getCpmpanyFolder() {
-    
     const formData = {
       company_id: params.id
     };
-    console.log('params id', params.id)
+    console.log('params id', params.id);
     store.dispatch(getCompanyFolder(formData)).then((res: any) => {
       setShowFolder(res.payload.folders);
     });
   }
-  function sendMessage(){
-  // (foldersData)
-  // localStorage.setItem('data',foldersData);
-navigate("/management/DocumentShare/"+params.id)
-localStorage.setItem("ourarraykey",JSON.stringify(foldersData));
 
-// console.log("my props", (foldersData))
+
+  function sendMessage() {
+    // (foldersData)
+    // localStorage.setItem('data',foldersData);
+    if(newArray.length > "0"){
+      navigate('/management/DocumentShare/' + params.id);
+      localStorage.setItem('ourarraykey', JSON.stringify(foldersData));
+    
+    }
+    else{
+      setDocumentopen(true);
+    }
+
+  
   }
+  console.log('my props', foldersData.length);
 
-
-  function viewDocument(id:any){
-    navigate(`/companies/document/view/${id}/${params.companyId}`)
+  function viewDocument(id: any) {
+    navigate(`/companies/document/view/${id}/${params.companyId}`);
   }
-  function addFolder(event:any,i:any,e:any) {
-    var ID = event.id
-    var cardID = (document.getElementById(i+'card')as any);
-    if (!newArray.includes(ID)){
+  function addFolder(event: any, i: any, e: any) {
+    var ID = event.id;
+    var cardID = document.getElementById(i + 'card') as any;
+ 
+    if (!newArray.includes(ID)) {
       newArray.push(event.id);
       foldersData.push(event);
-        cardID.classList.add("Active");
-       
-    }else{
-     
-      newArray = newArray.filter((id:any) => id != ID);
-      foldersData = foldersData.filter((id:any) => id.id != ID);
-      cardID.classList.remove("Active");
+      cardID.classList.add('Active');
+    } else {
+      newArray = newArray.filter((id: any) => id != ID);
+      foldersData = foldersData.filter((id: any) => id.id != ID);
+      cardID.classList.remove('Active');
     }
     
-    if(newArray.length > '0'){
-      setDisabled(true)
-    }else{
-      setDisabled(false)
-    }
-    }
+    // if(newArray.length > '0'){
+    //   setDisabled(true)
+    // }else{
+    //   setDisabled(false)
+    // }
+   
+  }
+
+
   function UploadDocument(e: any) {
     e.preventDefault();
     var imageUrl: any;
@@ -152,9 +172,12 @@ localStorage.setItem("ourarraykey",JSON.stringify(foldersData));
   useEffect(() => {
     getCpmpanyFolder();
   }, []);
- 
+
   const handleClickOpen = () => {
     setOpen(true);
+  };
+  const handleDocumentClose = () => {
+    setDocumentopen(false);
   };
   const handleClose = () => {
     setOpen(false);
@@ -193,6 +216,10 @@ localStorage.setItem("ourarraykey",JSON.stringify(foldersData));
       };
     }
   };
+  const ifEmpty= (val: string): boolean => {
+
+    return (val !== undefined && val.length > 0);// return true;
+}
   function handleClickOpenFolder(id: any) {
     setFolderId(id);
     setFolder(true);
@@ -200,9 +227,9 @@ localStorage.setItem("ourarraykey",JSON.stringify(foldersData));
   const showFolders = (id: any) => {
     navigate(`/management/companyfolders/${id}/${id}`);
   };
-  const onLocation = (id:any) =>{
+  const onLocation = (id: any) => {
     navigate(`/management/show-company-folders/${params.id}`);
-  }
+  };
   const folders = showFolder?.map((card: any, i: any) => {
     return (
       <>
@@ -213,15 +240,27 @@ localStorage.setItem("ourarraykey",JSON.stringify(foldersData));
                 paddingTop: '6px',
                 pb: '6px !important',
                 marginTop: '0px',
-                position:'relative',
-                mt:2
+                position: 'relative',
+                mt: 2
               }}
             >
-               <FormControlLabel
-                sx={{position:'absolute', top:100, right:10, zIndex:99999}}
-            control={
-              <Checkbox className='documentselect'  onClick={(e)=>{addFolder(card,i,e.target);}} />}
-              label="Selected box"
+              <FormControlLabel
+                sx={{
+                  position: 'absolute',
+                  top: 100,
+                  right: 10,
+                  zIndex: 99999
+                }}
+                control={
+                  <Checkbox
+                    className="documentselect" id='chekcbox'
+                    onClick={(e) => {
+                      addFolder
+                      (card, i, e.target);
+                    }}
+                  />
+                }
+                label="Selected box"
               />
               <Typography
                 style={{ cursor: 'pointer' }}
@@ -339,27 +378,90 @@ localStorage.setItem("ourarraykey",JSON.stringify(foldersData));
           alignItems="stretch"
           spacing={3}
         >
-          <Grid item xs={12} sx={{backgroundColor:"white", boxShadow:"0px 9px 16px rgb(159 162 191 / 18%), 0px 2px 2px rgb(159 162 191 / 32%)", ml:4, mt:3, borderRadius:"10px"}}>
-            <Card sx={{backgroundColor:"transparent", boxShadow:"none", pb:4}}>
+          <Grid
+            item
+            xs={12}
+            sx={{
+              backgroundColor: 'white',
+              boxShadow:
+                '0px 9px 16px rgb(159 162 191 / 18%), 0px 2px 2px rgb(159 162 191 / 32%)',
+              ml: 4,
+              mt: 3,
+              borderRadius: '10px'
+            }}
+          >
+            <Card
+              sx={{ backgroundColor: 'transparent', boxShadow: 'none', pb: 4 }}
+            >
               <CardHeader title="Add Company" />
               <Divider />
 
               <Grid item xs={12}>
                 <CardContent>{folders} </CardContent>
-         
               </Grid>
-              <Grid item xs={12}>
-           
-              </Grid>
+              <Grid item xs={12}></Grid>
             </Card>
             <Divider />
-            <Toolbar  sx={{ ml: 0 ,pl:"0 !important", mb:4, mt:3}}>
-                    <Button variant="contained"  
-                    onClick={()=>{sendMessage()}} 
-                    disabled={disabled == false}>Share </Button>
-                    <Button variant="contained" onClick={onLocation}  sx={{ ml: 1 }} disabled={disabled == false}>Request </Button>
-                    <Button variant="contained" component={Link} to="/management/transactions" sx={{ ml: 1 }} >Cancel </Button>
-                  </Toolbar>   
+            <Toolbar sx={{ ml: 0, pl: '0 !important', mb: 4, mt: 3 }}>
+            <Button
+                variant="contained"
+                type="submit"
+                onClick={() => {
+                  sendMessage();
+                }}
+                
+              >
+                Share{' '}
+              </Button>
+              {documentopen && (
+                    <Modal
+                      open={documentopen}
+                      onClose={handleDocumentClose}
+                      aria-labelledby="parent-modal-title"
+                      aria-describedby="parent-modal-description"
+                    >
+                      <Box sx={{ ...style, width: 400 }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ color: 'black', textAlign: 'center', mt: 3 }}
+                        >
+                         Please select Document?{' '}
+                        </Typography>
+                        <Box sx={{ textAlign: 'center', mt: 3 }}>
+                          <Button
+                            variant="outlined"
+                            sx={{
+                              background: '#3d6df9',
+                              color: 'white',
+                              mx: 1
+                            }}
+                            onClick={handleDocumentClose}
+                          >
+                            OK
+                          </Button>
+                          
+                        </Box>
+                      </Box>
+                    </Modal>
+                  )}
+              <Button
+                variant="contained"
+                onClick={onLocation}
+                sx={{ ml: 1 }}
+                // disabled={disabled == false}
+              >
+                Request{' '}
+              </Button>
+              <Button
+               variant="contained"
+               type="submit"
+                component={Link}
+                to="/management/transactions"
+                sx={{ ml: 1, color:"white" }}
+              >
+                Cancel{' '}
+              </Button>
+            </Toolbar>
             <Dialog
               open={open}
               TransitionComponent={Transition}
@@ -390,12 +492,11 @@ localStorage.setItem("ourarraykey",JSON.stringify(foldersData));
         </DialogActions> */}
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleAdd}>Create</Button>
+                <Button  onClick={handleAdd}>Create</Button>
                 <Button onClick={handleClose}>Close</Button>
               </DialogActions>
             </Dialog>
           </Grid>
-         
         </Grid>
       </Container>
       <Footer />

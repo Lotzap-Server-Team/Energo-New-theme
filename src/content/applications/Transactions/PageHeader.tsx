@@ -44,6 +44,7 @@ function PageHeader() {
         <Button 
           sx={{ mt: { xs: 2, md: 0 } }}
           variant="contained"
+          type="submit"
           component={Link} to="/management/addcompany"
           startIcon={<AddTwoToneIcon fontSize="small" />}
         >

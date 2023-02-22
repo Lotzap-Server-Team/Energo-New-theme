@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState } from 'react';
+import { FC, ChangeEvent, useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import numeral from 'numeral';
 import PropTypes from 'prop-types';
@@ -34,7 +34,7 @@ import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import BulkActions from './BulkActions';
-import {
+import capitalizeFirstLetter, {
   deleteCompany,
   deleteUser,
   getUsers,
@@ -53,7 +53,7 @@ interface Filters {
 interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
-  onActivestatus : any ;
+  onActivestatus: any;
 }
 const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
   const map = {
@@ -99,13 +99,19 @@ const applyPagination = (
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders, onActivestatus }) => {
+const RecentOrdersTable: FC<RecentOrdersTableProps> = ({
+  cryptoOrders,
+  onActivestatus
+}) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
   const selectedBulkActions = selectedCryptoOrders.length > 0;
   const [page, setPage] = useState<number>(0);
   const [users, setUsers] = useState([]);
+  const [usersEdit, setUsersEdit] = useState(false);
+  const [usersDelete, setUsersDelete] = useState(false);
+  const [usersView, setUsersView] = useState(false);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
     status: null
@@ -113,7 +119,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders, onActives
 
   const params = useParams();
   const [open, setOpen] = useState(false);
-
+  var permission: any = localStorage.getItem('permissions');
   const handleOpen = () => {
     setOpen(true);
   };
@@ -133,20 +139,32 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders, onActives
   const deleteUserById = (e: any) => {
     store.dispatch(deleteUser(e)).then((res: any) => {
       if (res.payload.status == true) {
-        // setPermissions((prevRows : any) => {
-        //   const rowToDeleteIndex = randomInt(0, prevRows.length - 1);
-        //   return [
-        //     ...permissions.slice(0, rowToDeleteIndex),
-        //     ...permissions.slice(rowToDeleteIndex + 1),
-        //   ];
-        // });
         toast.success(res.payload.message);
-        //  setPermissions([]);
       } else {
         toast.error(res.payload.message);
       }
     });
   };
+  function addPermission() {
+    var allPermission: any = JSON.parse(permission);
+    if (allPermission.length != 0) {
+      allPermission.forEach((per: any) => {
+        if (capitalizeFirstLetter(per.flag) == 'Users') {
+          if (per.name == 'Edit') {
+            setUsersEdit(true);
+          } else if (per.name == 'Delete') {
+            setUsersDelete(true);
+          } else if (per.name == 'View') {
+            setUsersView(true);
+          }
+        }
+      });
+    }
+    // });
+  }
+  useEffect(() => {
+    addPermission();
+  }, []);
   const statusOptions = [
     {
       id: 'all',
@@ -190,7 +208,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders, onActives
     store.dispatch(statusUpdate(formData)).then((res: any) => {
       if (res.payload.status == true) {
         toast.success(res.payload.message);
-        onActivestatus()
+        onActivestatus();
       } else {
         toast.error(res.payload.message);
       }
@@ -254,8 +272,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders, onActives
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
 
-              <TableCell align="right">Actions</TableCell>
-              <TableCell align="right">Status</TableCell>
+              <TableCell>Actions</TableCell>
+              <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -378,7 +396,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders, onActives
                       )}
                     </Typography>
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell>
                     {/* <Tooltip title="Edit Company" arrow>
                       <IconButton
                         sx={{
@@ -395,59 +413,68 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders, onActives
                         </Button>
                       </IconButton>
                     </Tooltip> */}
-                    <Tooltip
-                      title="Delete Company"
-                      arrow
-                      onClick={(e) => {
-                        goEditForm(cryptoOrder.id);
-                      }}
-                    >
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: theme.palette.primary.main
+
+                    {usersEdit && (
+                      <Tooltip
+                        title="Delete Company"
+                        arrow
+                        onClick={(e) => {
+                          goEditForm(cryptoOrder.id);
                         }}
-                        color="inherit"
-                        size="small"
                       >
-                        <EditTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip
-                      title="Edit User"
-                      arrow
-                      onClick={(e) => {
-                        viewForm(cryptoOrder.id);
-                      }}
-                    >
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: theme.palette.primary.main
+                        <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.primary.lighter
+                            },
+                            color: theme.palette.primary.main
+                          }}
+                          color="inherit"
+                          size="small"
+                        >
+                          <EditTwoToneIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                    {usersView && (
+                      <Tooltip
+                        title="Edit User"
+                        arrow
+                        onClick={(e) => {
+                          viewForm(cryptoOrder.id);
                         }}
-                        color="inherit"
-                        size="small"
                       >
-                        <VisibilityIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete user" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': { background: theme.colors.error.lighter },
-                          color: theme.palette.error.main
-                        }}
-                        color="inherit"
-                        size="small"
-                        onClick={handleOpen}
-                      >
-                        <DeleteTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
+                        <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.primary.lighter
+                            },
+                            color: theme.palette.primary.main
+                          }}
+                          color="inherit"
+                          size="small"
+                        >
+                          <VisibilityIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                    {usersDelete && (
+                      <Tooltip title="Delete user" arrow>
+                        <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.error.lighter
+                            },
+                            color: theme.palette.error.main
+                          }}
+                          color="inherit"
+                          size="small"
+                          onClick={handleOpen}
+                        >
+                          <DeleteTwoToneIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                   </TableCell>
                   {open && (
                     <Modal

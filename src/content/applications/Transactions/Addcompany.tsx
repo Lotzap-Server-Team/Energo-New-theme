@@ -403,7 +403,8 @@ const currencies = [
                         >
                         Submit
                           </Button>
-                        <Button variant="contained" sx={{ml:2}}>Cancel </Button>
+                        <Button variant="contained" type="submit"
+ sx={{ml:2}}>Cancel </Button>
                       </Toolbar> 
                   </div>
                 </Box>

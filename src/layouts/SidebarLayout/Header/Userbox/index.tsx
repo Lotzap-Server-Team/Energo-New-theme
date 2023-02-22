@@ -86,6 +86,9 @@ function HeaderUserbox() {
     navigate('/')
   }
 
+const Onlocate = () =>{
+  navigate('/management/profileview')
+}
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
@@ -145,7 +148,7 @@ function HeaderUserbox() {
         </List> */}
         <Divider />
         <Box sx={{ m: 1 }}>
-        <Button color="primary"  fullWidth   component={Link} to="/management/profileview">
+        <Button color="primary"  fullWidth   onClick={Onlocate}>
         <AccountCircleIcon sx={{ mr: 2 }} />
       Profile
           </Button>

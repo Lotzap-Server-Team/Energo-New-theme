@@ -52,7 +52,7 @@ interface RecentOrdersTableProps {
 interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
-  onActivestatus : any ;
+  onActivestatus: any;
 }
 interface Filters {
   status?: CryptoOrderStatus;
@@ -101,7 +101,10 @@ const applyPagination = (
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActivestatus }) => {
+const RecentOrdersTable: FC<RecentOrdersTableProps> = ({
+  cryptoOrders,
+  onActivestatus
+}) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -112,9 +115,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActive
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
-  const [companyEdit,setCompanyEdit] = useState(false);
-  const [companyDelete,setCompanyDelete] = useState(false);
-  const [companyView,setCompanyView] = useState(false);
+  const [companyEdit, setCompanyEdit] = useState(false);
+  const [companyDelete, setCompanyDelete] = useState(false);
+  const [companyView, setCompanyView] = useState(false);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -144,29 +147,29 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActive
     });
   };
 
-  var permission:any =localStorage.getItem('permissions');
-  function addPermission(){
-    console.log(JSON.parse(permission),"roles permission");
-      var allPermission:any =  JSON.parse(permission);
-      if(allPermission.length != 0){
-        allPermission.forEach((per:any) => {
-          console.log(per,"ppppppppppp");
-          if(capitalizeFirstLetter(per.flag) == "Companies"){
-            console.log(per.flag,"77777777");
-            if(per.name == "Edit"){
-              setCompanyEdit(true)
-            }else if(per.name == "Delete"){
-              setCompanyDelete(true)
-            }else if(per.name == "View"){
-              setCompanyView(true)
-            }
+  var permission: any = localStorage.getItem('permissions');
+  function addPermission() {
+    console.log(JSON.parse(permission), 'roles permission');
+    var allPermission: any = JSON.parse(permission);
+    if (allPermission.length != 0) {
+      allPermission.forEach((per: any) => {
+        console.log(per, 'ppppppppppp');
+        if (capitalizeFirstLetter(per.flag) == 'Companies') {
+          console.log(per.flag, '77777777');
+          if (per.name == 'Edit') {
+            setCompanyEdit(true);
+          } else if (per.name == 'Delete') {
+            setCompanyDelete(true);
+          } else if (per.name == 'View') {
+            setCompanyView(true);
           }
-        });
-      }
+        }
+      });
+    }
   }
-  useEffect(()=>{
-    addPermission()
-  },[])
+  useEffect(() => {
+    addPermission();
+  }, []);
 
   const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
@@ -190,31 +193,29 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActive
         : []
     );
   };
-  const getCompanyData =()=>{
+  const getCompanyData = () => {
     store.dispatch(getCompanies()).then((res: any) => {
       if (res.payload.status == true) {
         setCompanies(res.payload.companies);
-      }else{
-        toast.error(res.payload.message)
+      } else {
+        toast.error(res.payload.message);
       }
-    }); 
-  }
-  
+    });
+  };
 
-  const statusUpdateCompany=(e:any)=>{
-    const formData= {
-      id : e
-    }
-      store.dispatch(statusCompany(formData)).then((res: any) => {
-      if(res.payload.status==true){
-       toast.success(res.payload.message);
-       onActivestatus()
-      }else{
-           toast.error(res.payload.message);
+  const statusUpdateCompany = (e: any) => {
+    const formData = {
+      id: e
+    };
+    store.dispatch(statusCompany(formData)).then((res: any) => {
+      if (res.payload.status == true) {
+        toast.success(res.payload.message);
+        onActivestatus();
+      } else {
+        toast.error(res.payload.message);
       }
-    }); 
-  }
-  
+    });
+  };
 
   const handleSelectOneCryptoOrder = (
     event: ChangeEvent<HTMLInputElement>,
@@ -272,7 +273,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActive
       {!selectedBulkActions && <CardHeader title="Companies" />}
       <Divider />
       <TableContainer>
-        <Table>
+        <Table sx={{ minWidth: 1100 }}>
           <TableHead>
             <TableRow>
               {/* <TableCell padding="checkbox">
@@ -287,9 +288,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActive
               <TableCell>Company Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
-              <TableCell align="right">Web Site</TableCell>
-              <TableCell align="right">Status</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell>Web Site</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -314,7 +315,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActive
                       value={isCryptoOrderSelected}
                     />
                   </TableCell> */}
-                  <TableCell>
+                  <TableCell sx={{textAlign:"center"}}>
                     <Typography
                       variant="body1"
                       fontWeight="bold"
@@ -366,7 +367,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActive
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.website.slice(0, 10)}
+                      {cryptoOrder.website.slice(0, 24)}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -387,64 +388,78 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActive
                           Active
                         </Button>
                       ) : (
-                        <Button color="error"   onClick={() => statusUpdateCompany(cryptoOrder.id)}>Inactive</Button>
+                        <Button
+                          color="error"
+                          onClick={() => statusUpdateCompany(cryptoOrder.id)}
+                        >
+                          Inactive
+                        </Button>
                       )}
                     </Typography>
                   </TableCell>
-                  <TableCell align="right">
-                   {companyEdit && <Tooltip
-                      title="Edit Company"
-                      arrow
-                      onClick={(e) => {
-                        goEditForm(cryptoOrder.id);
-                      }}
-                    >
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: theme.palette.primary.main
+                  <TableCell>
+                    {companyEdit && (
+                      <Tooltip
+                        title="Edit Company"
+                        arrow
+                        onClick={(e) => {
+                          goEditForm(cryptoOrder.id);
                         }}
-                        color="inherit"
-                        size="small"
                       >
-                        <EditTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>}
-                    <Tooltip
-                      title="Edit Company"
-                      arrow
-                      onClick={(e) => {
-                        viewForm(cryptoOrder.id);
-                      }}
-                    >
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: theme.palette.primary.main
+                        <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.primary.lighter
+                            },
+                            color: theme.palette.primary.main
+                          }}
+                          color="inherit"
+                          size="small"
+                        >
+                          <EditTwoToneIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                    { companyView && (
+                      <Tooltip
+                        title="Edit Company"
+                        arrow
+                        onClick={(e) => {
+                          viewForm(cryptoOrder.id);
                         }}
-                        color="inherit"
-                        size="small"
                       >
-                        <VisibilityIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete Company" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': { background: theme.colors.error.lighter },
-                          color: theme.palette.error.main
-                        }}
-                        color="inherit"
-                        size="small"
-                        onClick={handleOpen}
-                      >
-                        <DeleteTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
+                        <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.primary.lighter
+                            },
+                            color: theme.palette.primary.main
+                          }}
+                          color="inherit"
+                          size="small"
+                        >
+                          <VisibilityIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                    {companyDelete && (
+                      <Tooltip title="Delete Company" arrow>
+                        <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.error.lighter
+                            },
+                            color: theme.palette.error.main
+                          }}
+                          color="inherit"
+                          size="small"
+                          onClick={handleOpen}
+                        >
+                          <DeleteTwoToneIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+
                     <Tooltip
                       title="Delete Company"
                       arrow

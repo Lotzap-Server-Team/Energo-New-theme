@@ -62,6 +62,14 @@ function DocumentShare(props: shareData) {
     navigate(`/management/show-company-folders/${params.id}`);
   }
 
+  const ifEmpty= (val: string): boolean => {
+  
+    return (val !== undefined && val.length > 0);// return true;
+}
+  const isValidData = ():boolean => {
+    const validateFields = ifEmpty(showFolder);
+    return validateFields;
+  };
   var storedArray = localStorage.getItem('ourarraykey');
   const showFolder = JSON.parse(storedArray);
   const folders = showFolder?.map((card: any, i: any) => {
@@ -104,23 +112,24 @@ function DocumentShare(props: shareData) {
   const folderList = documents?.map((card: any) => {
     return (
       <Grid
+      container
+       spacing={2}
         item
         key={card.id}
-        xs={12}
-        sm={6}
-        md={12}
         sx={{ paddingTop: '0px' }}
       >
+         <Grid xs={6} md={8}>
         <Card sx={{ backgroundColor: 'transparent', boxShadow: 'none', pb: 4 }}>
           <CardHeader title="Documents / Share Files" />
           <Divider />
 
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <CardContent>{folders} </CardContent>
           </Grid>
-          <Grid item xs={12}></Grid>
+          <Grid item xs={6}></Grid>
         </Card>
       </Grid>
+        </Grid>
     );
   });
   return (
@@ -141,7 +150,7 @@ function DocumentShare(props: shareData) {
           }}
         >
             <Divider />
-          <Grid item xs={5}>
+          <Grid item xs={6}>
             <Grid item xs={6}></Grid>
             <Card
               sx={{ backgroundColor: 'transparent', boxShadow: 'none', pb: 4 }}
@@ -154,16 +163,16 @@ function DocumentShare(props: shareData) {
               <Grid item xs={12}></Grid>
             </Card>
 
-            <Toolbar sx={{ ml: 3, mt: 7, pl: '0 !important' }}>
-              <Button type="submit" variant="contained" onClick={handleSubmit}>
+            <Toolbar sx={{ ml: 3, mt: 2, pl: '0 !important' }}>
+              <Button type="submit" variant="contained" onClick={handleSubmit}   disabled={!isValidData()}>
                 Submit
               </Button>
-              <Button variant="contained" onClick={cancel} sx={{ ml: 1 }}>
+              <Button variant="contained" type="submit" onClick={cancel} sx={{ ml: 1 }}>
                 Cancel{' '}
               </Button>
             </Toolbar>
           </Grid>
-          <Grid item xs={6} sx={{ mt: 8, ml: 4 }}>
+          <Grid item xs={6} sx={{p:4, mt:8}}>
             <TextField
               margin="normal"
               id="Name"
