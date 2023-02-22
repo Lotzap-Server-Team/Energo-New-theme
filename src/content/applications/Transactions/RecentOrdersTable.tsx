@@ -39,7 +39,7 @@ import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
 import Modal from '@mui/material/Modal';
 import { store } from 'src/redux/store';
-import {
+import capitalizeFirstLetter, {
   deleteCompany,
   getCompanies,
   statusCompany
@@ -112,6 +112,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActive
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
+  const [companyEdit,setCompanyEdit] = useState(false);
+  const [companyDelete,setCompanyDelete] = useState(false);
+  const [companyView,setCompanyView] = useState(false);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -140,24 +143,30 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActive
       }
     });
   };
-  const statusOptions = [
-    {
-      id: 'all',
-      name: 'All'
-    },
-    {
-      id: 'completed',
-      name: 'Completed'
-    },
-    {
-      id: 'pending',
-      name: 'Pending'
-    },
-    {
-      id: 'failed',
-      name: 'Failed'
-    }
-  ];
+
+  var permission:any =localStorage.getItem('permissions');
+  function addPermission(){
+    console.log(JSON.parse(permission),"roles permission");
+      var allPermission:any =  JSON.parse(permission);
+      if(allPermission.length != 0){
+        allPermission.forEach((per:any) => {
+          console.log(per,"ppppppppppp");
+          if(capitalizeFirstLetter(per.flag) == "Companies"){
+            console.log(per.flag,"77777777");
+            if(per.name == "Edit"){
+              setCompanyEdit(true)
+            }else if(per.name == "Delete"){
+              setCompanyDelete(true)
+            }else if(per.name == "View"){
+              setCompanyView(true)
+            }
+          }
+        });
+      }
+  }
+  useEffect(()=>{
+    addPermission()
+  },[])
 
   const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
@@ -383,7 +392,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActive
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-                    <Tooltip
+                   {companyEdit && <Tooltip
                       title="Edit Company"
                       arrow
                       onClick={(e) => {
@@ -402,7 +411,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders,  onActive
                       >
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
-                    </Tooltip>
+                    </Tooltip>}
                     <Tooltip
                       title="Edit Company"
                       arrow

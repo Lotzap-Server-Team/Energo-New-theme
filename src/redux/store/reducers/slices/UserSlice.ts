@@ -19,6 +19,9 @@ export const createUser = createAsyncThunk('Create_user',  (user: User) => {
         return res.json()
     });
 })
+export default function capitalizeFirstLetter(val:string) {
+    return val.charAt(0).toUpperCase() + val.slice(1);
+}
 
 export const createRole = createAsyncThunk('Create_role', async (role: Role) => {
     return  fetch(apiEndPoint+'/createRole', {
